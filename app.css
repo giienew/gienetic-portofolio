@@ -205,3 +205,90 @@ button{font-family:inherit;cursor:pointer}
 /* --- FOCUS --- */
 :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 ::selection{background:rgba(0,122,255,.25);color:var(--text)}
+
+
+
+/* ===== LOADING STATE ===== */
+.loading .section{opacity:0;transform:translateY(20px)}
+.loaded .section{animation:slideUp .6s ease forwards}
+.loaded .section:nth-child(2){animation-delay:.1s}
+.loaded .section:nth-child(3){animation-delay:.2s}
+.loaded .section:nth-child(4){animation-delay:.3s}
+.loaded .section:nth-child(5){animation-delay:.4s}
+@keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+
+/* ===== RIPPLE EFFECT ===== */
+.ripple-effect{position:absolute;border-radius:50%;background:rgba(255,255,255,.15);transform:scale(0);animation:rippleAnim .5s ease-out;pointer-events:none;z-index:1}
+[data-theme="light"] .ripple-effect{background:rgba(0,0,0,.06)}
+@keyframes rippleAnim{to{transform:scale(1);opacity:0}}
+
+/* ===== TOAST NOTIFICATION ===== */
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-20px);padding:10px 20px;border-radius:12px;font-size:12px;font-weight:600;z-index:9999;opacity:0;transition:all .3s cubic-bezier(.175,.885,.32,1.275);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;gap:8px;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-success{background:rgba(52,199,89,.92);color:#fff}
+.toast-error{background:rgba(255,59,48,.92);color:#fff}
+.toast-info{background:rgba(0,122,255,.92);color:#fff}
+
+/* ===== ENHANCED BUTTON STATES ===== */
+.btn{position:relative;overflow:hidden;transform:translateZ(0);transition:all .15s ease;-webkit-tap-highlight-color:transparent}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,122,255,.25)}
+.btn:active{transform:scale(.94) translateY(0);transition:transform .08s}
+.btn-primary:active{box-shadow:0 2px 8px rgba(0,122,255,.4) inset}
+
+/* ===== ENHANCED CARD INTERACTIONS ===== */
+.card{transform:translateZ(0);transition:transform .3s cubic-bezier(.25,.46,.45,.94),box-shadow .3s ease,background .4s}
+.card:active{transform:scale(.98)!important}
+.project-card{border-left:3px solid var(--green)}
+
+/* ===== TAB BAR ENHANCED ===== */
+.tab{position:relative;overflow:hidden}
+.tab::after{content:'';position:absolute;top:0;left:50%;width:0;height:2px;background:var(--primary);border-radius:0 0 2px 2px;transition:all .25s ease;transform:translateX(-50%)}
+.tab.active::after{width:20px}
+.tab i{transition:transform .2s ease}
+.tab.active i{transform:scale(1.15)}
+.tab:active{transform:scale(.85)}
+
+/* ===== SOCIAL BUTTONS ENHANCED ===== */
+.social-btn{transition:all .2s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden}
+.social-btn:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 6px 16px rgba(0,122,255,.2)}
+.social-btn:active{transform:scale(.85);transition:transform .08s}
+
+/* ===== STAT CARDS ENHANCED ===== */
+.stat{transition:all .2s ease;cursor:default}
+.stat:hover{transform:translateY(-2px);border-color:var(--primary);box-shadow:0 4px 12px rgba(0,122,255,.15)}
+
+/* ===== TAGS ENHANCED ===== */
+.tag{transition:all .15s ease;cursor:default;position:relative;overflow:hidden}
+.tag:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 2px 8px rgba(0,122,255,.12)}
+
+/* ===== THEME TOGGLE ENHANCED ===== */
+.theme-toggle{animation:fadeIn .6s ease .5s backwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== HERO AVATAR PULSE ===== */
+.hero-avatar{position:relative}
+.hero-avatar::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--primary);opacity:.4;animation:avatarPulse 3s infinite ease-in-out}
+@keyframes avatarPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.04);opacity:.8}}
+
+/* ===== SKILL BAR GLOW ===== */
+.fill{position:relative}
+.fill::after{content:'';position:absolute;right:0;top:-1px;bottom:-1px;width:8px;background:var(--primary);border-radius:50%;filter:blur(3px);opacity:.6}
+
+/* ===== FORM INPUT ANIMATIONS ===== */
+.field input,.field textarea{transition:all .2s ease,transform .15s}
+.field input:focus,.field textarea:focus{transform:translateY(-1px);border-color:var(--primary);box-shadow:0 4px 12px rgba(0,122,255,.1)}
+
+/* ===== CHIP HOVER ===== */
+.chip{transition:all .2s ease}
+.chip:hover{transform:scale(1.05)}
+
+/* ===== PROJECT ICON ANIMATION ===== */
+.project-icon{animation:iconFloat 3s ease-in-out infinite}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* ===== MUTED NOTE ===== */
+.muted-note{opacity:.5;font-size:12px;margin-top:12px}
+
+/* ===== SCROLLBAR ON HOVER ===== */
+body::-webkit-scrollbar-thumb{background:transparent;transition:background .3s}
+body:hover::-webkit-scrollbar-thumb{background:var(--bg3)}
