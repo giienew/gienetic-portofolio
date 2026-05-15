@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -7,524 +7,165 @@
     <link rel="icon" href="profile.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GVFMLWT98T"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GVFMLWT98T');
-    </script>
+    <link rel="stylesheet" href="app.css">
 </head>
 <body>
-    <!-- Theme Switcher -->
-    <div class="theme-switcher" id="themeSwitcher">
-        <button class="theme-btn active" data-theme="dark" title="Dark Mode">
-            <i class="fas fa-moon"></i>
-        </button>
-        <button class="theme-btn" data-theme="light" title="Light Mode">
-            <i class="fas fa-sun"></i>
-        </button>
-        <button class="theme-btn" data-theme="midnight" title="Midnight Blue">
-            <i class="fas fa-star"></i>
-        </button>
+
+    <!-- Background Effects -->
+    <div class="bg-gradient"></div>
+    <div class="bg-noise"></div>
+
+    <!-- Theme Toggle (floating) -->
+    <div class="theme-toggle" id="themeToggle">
+        <button class="theme-btn active" data-theme="dark" aria-label="Dark mode"><i class="fas fa-moon"></i></button>
+        <button class="theme-btn" data-theme="light" aria-label="Light mode"><i class="fas fa-sun"></i></button>
+        <button class="theme-btn" data-theme="midnight" aria-label="Midnight mode"><i class="fas fa-star"></i></button>
     </div>
 
-    <!-- Dynamic Background -->
-    <div class="bg-mesh"></div>
-    <div class="bg-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-
-    <!-- Top Status Bar (iOS style) -->
-    <header class="status-bar">
-        <div class="status-left">
-            <span class="status-time" id="statusTime"></span>
-        </div>
-        <div class="status-center">
-            <span class="status-name">Ayogi Akbar</span>
-        </div>
-        <div class="status-right">
-            <i class="fas fa-wifi"></i>
+    <!-- Status Bar -->
+    <header class="statusbar">
+        <span class="statusbar-time" id="clock"></span>
+        <span class="statusbar-title">Portfolio</span>
+        <span class="statusbar-icons">
             <i class="fas fa-signal"></i>
-            <span class="battery-icon"><i class="fas fa-battery-full"></i></span>
-        </div>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </span>
     </header>
 
-    <!-- Main App Container -->
-    <main class="app-container">
-        <!-- Hero Section -->
-        <section id="hero" class="section hero-section">
-            <div class="hero-content">
-                <div class="hero-avatar-wrapper" data-animate="scale">
-                    <div class="hero-avatar">
-                        <img src="gio.jpg" alt="Ayogi Akbar">
-                        <div class="avatar-ring"></div>
-                        <div class="avatar-status online"></div>
-                    </div>
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- HERO -->
+        <section id="home" class="section hero" data-anim="fade">
+            <div class="hero-avatar">
+                <img src="gio.jpg" alt="Ayogi Akbar" loading="lazy">
+                <span class="avatar-online"></span>
+            </div>
+            <h1 class="hero-name">Ayogi Akbar</h1>
+            <p class="hero-role">Full-Stack Developer & API Engineer</p>
+            <div class="hero-badges">
+                <span class="chip chip-blue"><i class="fas fa-bolt"></i> Developer</span>
+                <span class="chip chip-green"><i class="fas fa-check-circle"></i> Verified</span>
+            </div>
+            <div class="hero-stats">
+                <div class="stat"><strong>3+</strong><span>Years</span></div>
+                <div class="stat"><strong>6</strong><span>Projects</span></div>
+                <div class="stat"><strong>100%</strong><span>Passion</span></div>
+            </div>
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Projects</a>
+                <a href="#contact" class="btn btn-ghost"><i class="fas fa-paper-plane"></i> Contact</a>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="section" data-anim="fade">
+            <h2 class="section-title">About</h2>
+            <div class="card">
+                <div class="info-grid">
+                    <div class="info-row"><i class="fas fa-user"></i><div><small>Full Name</small><span>Ayogi Akbar Afrenggo</span></div></div>
+                    <div class="info-row"><i class="fas fa-map-marker-alt"></i><div><small>Location</small><span>Pekanbaru, Riau</span></div></div>
+                    <div class="info-row"><i class="fas fa-heart"></i><div><small>Status</small><span>Married — Echa Putri Exsala</span></div></div>
+                    <div class="info-row"><i class="fas fa-gamepad"></i><div><small>Hobbies</small><span>Coding, Gaming, Design</span></div></div>
                 </div>
-                <div class="hero-text" data-animate="fade-up">
-                    <h1 class="hero-name">Ayogi Akbar</h1>
-                    <p class="hero-tagline">Full-Stack Developer & Creative Designer</p>
-                    <div class="hero-badges">
-                        <span class="badge badge-pro"><i class="fas fa-bolt"></i> Developer</span>
-                        <span class="badge badge-verified"><i class="fas fa-check-circle"></i> Verified</span>
-                    </div>
+                <p class="bio">Gamer & Coding Enthusiast. Seorang ayah dari 3 anak yang berkarier sebagai graphic designer di perusahaan advertising. Coding adalah passion — dari ngulik script sampai bikin desain kece, hidup selalu penuh tantangan digital.</p>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="section" data-anim="fade">
+            <h2 class="section-title">Projects</h2>
+
+            <!-- REST API Card -->
+            <div class="card project-card">
+                <div class="project-header">
+                    <div class="project-icon"><i class="fas fa-server"></i></div>
+                    <span class="chip chip-green">LIVE</span>
                 </div>
-                <div class="hero-stats" data-animate="fade-up" data-delay="200">
-                    <div class="stat-card">
-                        <span class="stat-number">6</span>
-                        <span class="stat-label">Projects</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">3+</span>
-                        <span class="stat-label">Years Exp</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">100%</span>
-                        <span class="stat-label">Passion</span>
-                    </div>
+                <h3 class="project-name">Exsala REST API</h3>
+                <p class="project-desc">Public REST API service for developers. Various endpoints: AI tools, downloader, converter, search, and more. Fast, reliable, free to use.</p>
+                <div class="project-tech">
+                    <span class="tag">Node.js</span>
+                    <span class="tag">Express</span>
+                    <span class="tag">REST API</span>
+                    <span class="tag">JSON</span>
                 </div>
-                <div class="hero-cta" data-animate="fade-up" data-delay="400">
-                    <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> View Projects</a>
-                    <a href="#contact" class="btn btn-secondary"><i class="fas fa-paper-plane"></i> Contact Me</a>
+                <div class="project-actions">
+                    <a href="https://exsalapi.my.id" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Visit API</a>
+                    <a href="https://exsalapi.my.id" target="_blank" class="btn btn-ghost btn-sm"><i class="fas fa-book"></i> Docs</a>
+                </div>
+            </div>
+
+            <p class="muted-note">More projects coming soon...</p>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="section" data-anim="fade">
+            <h2 class="section-title">Skills</h2>
+
+            <div class="card">
+                <h4 class="card-subtitle"><i class="fas fa-code"></i> Languages</h4>
+                <div class="skill-bars">
+                    <div class="skill-row"><span>PHP</span><div class="bar"><div class="fill" data-w="75"></div></div><span class="pct">75%</span></div>
+                    <div class="skill-row"><span>HTML/CSS</span><div class="bar"><div class="fill" data-w="80"></div></div><span class="pct">80%</span></div>
+                    <div class="skill-row"><span>JavaScript</span><div class="bar"><div class="fill" data-w="65"></div></div><span class="pct">65%</span></div>
+                    <div class="skill-row"><span>Python</span><div class="bar"><div class="fill" data-w="50"></div></div><span class="pct">50%</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4 class="card-subtitle"><i class="fas fa-layer-group"></i> Frameworks & Tools</h4>
+                <div class="chip-grid">
+                    <span class="tag">Laravel</span>
+                    <span class="tag">Bootstrap</span>
+                    <span class="tag">Tailwind</span>
+                    <span class="tag">React</span>
+                    <span class="tag">Express.js</span>
+                    <span class="tag">MySQL</span>
+                    <span class="tag">Git</span>
+                    <span class="tag">VS Code</span>
+                    <span class="tag">Figma</span>
+                    <span class="tag">Linux</span>
                 </div>
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="section">
-            <div class="section-header" data-animate="fade-up">
-                <h2 class="section-title">About Me</h2>
-                <p class="section-subtitle">Get to know me better</p>
-            </div>
-            <div class="about-card glass-card" data-animate="fade-up" data-delay="100">
-                <div class="about-info-grid">
-                    <div class="info-item">
-                        <i class="fas fa-user"></i>
-                        <div>
-                            <span class="info-label">Full Name</span>
-                            <span class="info-value">Ayogi Akbar Afrenggo</span>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <span class="info-label">Location</span>
-                            <span class="info-value">Pekanbaru, Riau, Indonesia</span>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-heart"></i>
-                        <div>
-                            <span class="info-label">Status</span>
-                            <span class="info-value">Married — Echa Putri Exsala</span>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-gamepad"></i>
-                        <div>
-                            <span class="info-label">Hobbies</span>
-                            <span class="info-value">Coding, Gaming, Design</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-bio">
-                    <p>Gamer & Coding Enthusiast, seorang ayah dari 3 anak yang berkarier di dunia kreatif sebagai graphic designer di perusahaan advertising. Coding bukan sekadar kerjaan, tapi juga passion dan cara belajar hal baru. Antara push rank game favorit, ngulik script, sampai bikin desain kece — hidup selalu penuh warna dan tantangan digital. 🚀</p>
-                </div>
-            </div>
-        </section>
+        <!-- CONTACT -->
+        <section id="contact" class="section" data-anim="fade">
+            <h2 class="section-title">Contact</h2>
 
-        <!-- Projects Section -->
-        <section id="projects" class="section">
-            <div class="section-header" data-animate="fade-up">
-                <h2 class="section-title">Projects</h2>
-                <p class="section-subtitle">Things I've built</p>
-            </div>
-
-            <!-- Filter Tabs -->
-            <div class="filter-tabs" data-animate="fade-up" data-delay="100">
-                <button class="filter-tab active" data-filter="all">All</button>
-                <button class="filter-tab" data-filter="web">Web App</button>
-                <button class="filter-tab" data-filter="api">API</button>
-                <button class="filter-tab" data-filter="tools">Tools</button>
-            </div>
-
-            <!-- Projects Grid -->
-            <div class="projects-grid">
-                <!-- Project: REST API -->
-                <article class="project-card glass-card" data-category="api" data-animate="fade-up" data-delay="100">
-                    <div class="project-card-header">
-                        <div class="project-icon-wrapper api">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <span class="project-badge new">NEW</span>
-                    </div>
-                    <h3 class="project-title">Exsala REST API</h3>
-                    <p class="project-desc">Public REST API service for developers. Provides various endpoints for integration and development needs.</p>
-                    <div class="project-tech-stack">
-                        <span class="tech-chip">Node.js</span>
-                        <span class="tech-chip">Express</span>
-                        <span class="tech-chip">REST API</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://exsalapi.my.id" target="_blank" class="project-link primary"><i class="fas fa-external-link-alt"></i> Live API</a>
-                        <button class="project-link secondary project-detail-btn" data-project="exsala-api"><i class="fas fa-info-circle"></i> Details</button>
-                    </div>
-                </article>
-
-                <!-- Project: WhatsApp Bot -->
-                <article class="project-card glass-card" data-category="tools" data-animate="fade-up" data-delay="200">
-                    <div class="project-card-header">
-                        <div class="project-icon-wrapper bot">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <span class="project-badge hot">HOT</span>
-                    </div>
-                    <h3 class="project-title">WhatsApp Bot MD</h3>
-                    <p class="project-desc">Multi-Device WhatsApp bot with Baileys library. Supports automated replies, group management, and API integration.</p>
-                    <div class="project-tech-stack">
-                        <span class="tech-chip">JavaScript</span>
-                        <span class="tech-chip">Baileys</span>
-                        <span class="tech-chip">Node.js</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://chat.whatsapp.com/FGraEUnCIsUIhzgee0C0CR" target="_blank" class="project-link primary"><i class="fas fa-external-link-alt"></i> Join Group</a>
-                        <button class="project-link secondary project-detail-btn" data-project="whatsapp-bot"><i class="fas fa-info-circle"></i> Details</button>
-                    </div>
-                </article>
-
-                <!-- Project: Koperasi 317 -->
-                <article class="project-card glass-card" data-category="web" data-animate="fade-up" data-delay="300">
-                    <div class="project-card-header">
-                        <div class="project-icon-wrapper web">
-                            <i class="fas fa-store"></i>
-                        </div>
-                    </div>
-                    <h3 class="project-title">Unit Usaha Koperasi 317</h3>
-                    <p class="project-desc">Web application for cooperative business unit. Sales management, transaction reports, and receipt generation.</p>
-                    <div class="project-tech-stack">
-                        <span class="tech-chip">PHP</span>
-                        <span class="tech-chip">Bootstrap</span>
-                        <span class="tech-chip">MySQL</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="http://debang.my.id/koperasi" target="_blank" class="project-link primary"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        <button class="project-link secondary project-detail-btn" data-project="koperasi"><i class="fas fa-info-circle"></i> Details</button>
-                    </div>
-                </article>
-
-                <!-- Project: Tracking Banking -->
-                <article class="project-card glass-card" data-category="web" data-animate="fade-up" data-delay="400">
-                    <div class="project-card-header">
-                        <div class="project-icon-wrapper finance">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                    </div>
-                    <h3 class="project-title">Tracking Banking</h3>
-                    <p class="project-desc">Finance tracking web app with income/expense management, data visualization, and monthly summaries.</p>
-                    <div class="project-tech-stack">
-                        <span class="tech-chip">PHP</span>
-                        <span class="tech-chip">Chart.js</span>
-                        <span class="tech-chip">MySQL</span>
-                    </div>
-                    <div class="project-links">
-                        <button class="project-link secondary project-detail-btn" data-project="tracking-banking"><i class="fas fa-info-circle"></i> Details</button>
-                    </div>
-                </article>
-
-                <!-- Project: Dashboard Sales -->
-                <article class="project-card glass-card" data-category="tools" data-animate="fade-up" data-delay="500">
-                    <div class="project-card-header">
-                        <div class="project-icon-wrapper data">
-                            <i class="fas fa-table"></i>
-                        </div>
-                    </div>
-                    <h3 class="project-title">Dashboard Sales Report</h3>
-                    <p class="project-desc">Excel automation for daily sales data processing and visualization with pivot tables and charts.</p>
-                    <div class="project-tech-stack">
-                        <span class="tech-chip">Excel</span>
-                        <span class="tech-chip">Google Forms</span>
-                        <span class="tech-chip">Automation</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://docs.google.com/spreadsheets/d/1oOXCgLSf6V_OOR700lDdNjtD5r2JHCbeJUJZ4bxTW-g/edit?usp=sharing" target="_blank" class="project-link primary"><i class="fas fa-external-link-alt"></i> View Sheet</a>
-                    </div>
-                </article>
-
-                <!-- Project: Long Avatar -->
-                <article class="project-card glass-card" data-category="tools" data-animate="fade-up" data-delay="600">
-                    <div class="project-card-header">
-                        <div class="project-icon-wrapper creative">
-                            <i class="fas fa-image"></i>
-                        </div>
-                    </div>
-                    <h3 class="project-title">Long Avatar WhatsApp</h3>
-                    <p class="project-desc">Web tool to create extended profile pictures for WhatsApp. Simple, fast, and effective.</p>
-                    <div class="project-tech-stack">
-                        <span class="tech-chip">HTML</span>
-                        <span class="tech-chip">CSS</span>
-                        <span class="tech-chip">JavaScript</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://pepekpanjang.up.railway.app/" target="_blank" class="project-link primary"><i class="fas fa-external-link-alt"></i> Try It</a>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="section">
-            <div class="section-header" data-animate="fade-up">
-                <h2 class="section-title">Skills</h2>
-                <p class="section-subtitle">Technologies I work with</p>
-            </div>
-
-            <div class="skills-grid">
-                <!-- Languages -->
-                <div class="skill-group glass-card" data-animate="fade-up" data-delay="100">
-                    <h3 class="skill-group-title"><i class="fas fa-code"></i> Languages</h3>
-                    <div class="skill-items">
-                        <div class="skill-item-modern">
-                            <div class="skill-info">
-                                <span class="skill-name">PHP</span>
-                                <span class="skill-percent">75%</span>
-                            </div>
-                            <div class="skill-bar-modern">
-                                <div class="skill-fill" data-width="75"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item-modern">
-                            <div class="skill-info">
-                                <span class="skill-name">HTML / CSS</span>
-                                <span class="skill-percent">80%</span>
-                            </div>
-                            <div class="skill-bar-modern">
-                                <div class="skill-fill" data-width="80"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item-modern">
-                            <div class="skill-info">
-                                <span class="skill-name">JavaScript</span>
-                                <span class="skill-percent">65%</span>
-                            </div>
-                            <div class="skill-bar-modern">
-                                <div class="skill-fill" data-width="65"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item-modern">
-                            <div class="skill-info">
-                                <span class="skill-name">Python</span>
-                                <span class="skill-percent">50%</span>
-                            </div>
-                            <div class="skill-bar-modern">
-                                <div class="skill-fill" data-width="50"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Frameworks -->
-                <div class="skill-group glass-card" data-animate="fade-up" data-delay="200">
-                    <h3 class="skill-group-title"><i class="fas fa-layer-group"></i> Frameworks</h3>
-                    <div class="chip-grid">
-                        <span class="skill-chip">Laravel</span>
-                        <span class="skill-chip">Bootstrap</span>
-                        <span class="skill-chip">Tailwind CSS</span>
-                        <span class="skill-chip">React</span>
-                        <span class="skill-chip">Express.js</span>
-                        <span class="skill-chip">Django</span>
-                    </div>
-                </div>
-
-                <!-- Tools -->
-                <div class="skill-group glass-card" data-animate="fade-up" data-delay="300">
-                    <h3 class="skill-group-title"><i class="fas fa-tools"></i> Tools</h3>
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <i class="fab fa-github"></i>
-                            <span>GitHub</span>
-                        </div>
-                        <div class="tool-card">
-                            <i class="fas fa-code"></i>
-                            <span>VS Code</span>
-                        </div>
-                        <div class="tool-card">
-                            <i class="fab fa-figma"></i>
-                            <span>Figma</span>
-                        </div>
-                        <div class="tool-card">
-                            <i class="fas fa-database"></i>
-                            <span>MySQL</span>
-                        </div>
-                        <div class="tool-card">
-                            <i class="fas fa-terminal"></i>
-                            <span>Terminal</span>
-                        </div>
-                        <div class="tool-card">
-                            <i class="fab fa-linux"></i>
-                            <span>Linux</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Soft Skills -->
-                <div class="skill-group glass-card" data-animate="fade-up" data-delay="400">
-                    <h3 class="skill-group-title"><i class="fas fa-brain"></i> Other Skills</h3>
-                    <div class="chip-grid">
-                        <span class="skill-chip">Excel Advanced</span>
-                        <span class="skill-chip">Graphic Design</span>
-                        <span class="skill-chip">Video Editing</span>
-                        <span class="skill-chip">Android Modding</span>
-                        <span class="skill-chip">Custom ROM</span>
-                        <span class="skill-chip">API Development</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Achievements Section -->
-        <section id="achievements" class="section">
-            <div class="section-header" data-animate="fade-up">
-                <h2 class="section-title">Achievements</h2>
-                <p class="section-subtitle">Certifications & Awards</p>
-            </div>
-            <div class="achievements-grid">
-                <div class="achievement-card glass-card" data-animate="fade-up" data-delay="100">
-                    <div class="achievement-icon gold">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <div class="achievement-content">
-                        <h3>Kompetensi Keahlian Code Editing</h3>
-                        <p>Sertifikasi Kompetensi JavaScript Komunitas</p>
-                        <span class="achievement-year">2019</span>
-                    </div>
-                </div>
-                <div class="achievement-card glass-card" data-animate="fade-up" data-delay="200">
-                    <div class="achievement-icon silver">
-                        <i class="fas fa-award"></i>
-                    </div>
-                    <div class="achievement-content">
-                        <h3>Design Visual Grafis Editing</h3>
-                        <p>Sertifikasi Kompetensi Keahlian Visual Grafis</p>
-                        <span class="achievement-year">2021</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="section">
-            <div class="section-header" data-animate="fade-up">
-                <h2 class="section-title">Contact</h2>
-                <p class="section-subtitle">Let's work together</p>
-            </div>
-            <div class="contact-container">
-                <form class="contact-form glass-card" id="contactForm" data-animate="fade-up" data-delay="100">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="your@email.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" placeholder="What's this about?">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" placeholder="Write your message..." rows="4" required></textarea>
-                    </div>
+            <div class="card">
+                <form id="contactForm" class="contact-form">
+                    <div class="field"><label>Name</label><input type="text" id="fname" placeholder="Your name" required></div>
+                    <div class="field"><label>Email</label><input type="email" id="femail" placeholder="your@email.com"></div>
+                    <div class="field"><label>Message</label><textarea id="fmsg" placeholder="Write something..." rows="3" required></textarea></div>
                     <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-paper-plane"></i> Send via WhatsApp</button>
                 </form>
+            </div>
 
-                <div class="social-grid" data-animate="fade-up" data-delay="200">
-                    <a href="https://github.com/giienew" target="_blank" class="social-card glass-card">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </a>
-                    <a href="https://api.whatsapp.com/send?phone=6282173230348" target="_blank" class="social-card glass-card">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>WhatsApp</span>
-                    </a>
-                    <a href="https://instagram.com/only_babygio" target="_blank" class="social-card glass-card">
-                        <i class="fab fa-instagram"></i>
-                        <span>Instagram</span>
-                    </a>
-                    <a href="https://x.com/ayogiakbar" target="_blank" class="social-card glass-card">
-                        <i class="fab fa-x-twitter"></i>
-                        <span>X / Twitter</span>
-                    </a>
-                    <a href="https://exsalapi.my.id" target="_blank" class="social-card glass-card">
-                        <i class="fas fa-server"></i>
-                        <span>REST API</span>
-                    </a>
-                    <a href="https://facebook.com/ayogi" target="_blank" class="social-card glass-card">
-                        <i class="fab fa-facebook"></i>
-                        <span>Facebook</span>
-                    </a>
-                </div>
+            <div class="social-row">
+                <a href="https://github.com/giienew" target="_blank" class="social-btn"><i class="fab fa-github"></i></a>
+                <a href="https://api.whatsapp.com/send?phone=6282173230348" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://instagram.com/only_babygio" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                <a href="https://exsalapi.my.id" target="_blank" class="social-btn"><i class="fas fa-server"></i></a>
+                <a href="https://facebook.com/ayogi" target="_blank" class="social-btn"><i class="fab fa-facebook"></i></a>
             </div>
         </section>
+
     </main>
 
-    <!-- Bottom Tab Bar (iOS style) -->
-    <nav class="tab-bar">
-        <a href="#hero" class="tab-item active" data-section="hero">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="#projects" class="tab-item" data-section="projects">
-            <i class="fas fa-folder"></i>
-            <span>Projects</span>
-        </a>
-        <a href="#skills" class="tab-item" data-section="skills">
-            <i class="fas fa-code"></i>
-            <span>Skills</span>
-        </a>
-        <a href="#achievements" class="tab-item" data-section="achievements">
-            <i class="fas fa-trophy"></i>
-            <span>Awards</span>
-        </a>
-        <a href="#contact" class="tab-item" data-section="contact">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
-        </a>
+    <!-- Bottom Tab Bar -->
+    <nav class="tabbar" id="tabbar">
+        <a href="#home" class="tab active" data-section="home"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="#about" class="tab" data-section="about"><i class="fas fa-user"></i><span>About</span></a>
+        <a href="#projects" class="tab" data-section="projects"><i class="fas fa-folder"></i><span>Projects</span></a>
+        <a href="#skills" class="tab" data-section="skills"><i class="fas fa-code"></i><span>Skills</span></a>
+        <a href="#contact" class="tab" data-section="contact"><i class="fas fa-envelope"></i><span>Contact</span></a>
     </nav>
 
-    <!-- Project Detail Modal -->
-    <div class="modal-overlay" id="projectModal">
-        <div class="modal-sheet glass-card">
-            <div class="modal-handle"></div>
-            <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
-            <div class="modal-body">
-                <div class="modal-gallery">
-                    <img id="modalMainImage" src="" alt="Project Preview">
-                    <div class="modal-thumbnails" id="modalThumbnails"></div>
-                </div>
-                <div class="modal-info">
-                    <h3 id="modalTitle">Project Title</h3>
-                    <div class="modal-meta">
-                        <span class="modal-category" id="modalCategory"></span>
-                        <span class="modal-date" id="modalDate"></span>
-                    </div>
-                    <p id="modalDescription"></p>
-                    <div class="modal-tech" id="modalTech"></div>
-                    <div class="modal-actions">
-                        <a href="#" id="modalDemoLink" class="btn btn-primary" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
