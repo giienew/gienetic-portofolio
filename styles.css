@@ -1348,3 +1348,263 @@ body {
     background: rgba(0, 122, 255, 0.3);
     color: var(--text-primary);
 }
+
+
+/* ===== THEME SWITCHER ===== */
+.theme-switcher {
+    position: fixed;
+    top: 56px;
+    right: 16px;
+    z-index: 1100;
+    display: flex;
+    gap: 4px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 4px;
+    box-shadow: var(--glass-shadow);
+}
+
+.theme-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.25s ease;
+}
+
+.theme-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4);
+}
+
+.theme-btn:active {
+    transform: scale(0.9);
+}
+
+/* ===== LIGHT THEME ===== */
+[data-theme="light"] {
+    --primary: #007AFF;
+    --primary-light: #5AC8FA;
+    --secondary: #5856D6;
+    --accent: #FF2D55;
+    --success: #34C759;
+    --warning: #FF9500;
+    --bg-primary: #F2F2F7;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #F2F2F7;
+    --bg-elevated: #E5E5EA;
+    --text-primary: #1C1C1E;
+    --text-secondary: #636366;
+    --text-tertiary: #8E8E93;
+    --separator: rgba(60, 60, 67, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.78);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .bg-mesh {
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(0, 122, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(88, 86, 214, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255, 45, 85, 0.03) 0%, transparent 50%);
+}
+
+[data-theme="light"] .orb {
+    opacity: 0.12;
+}
+
+[data-theme="light"] .status-bar {
+    background: rgba(242, 242, 247, 0.88);
+}
+
+[data-theme="light"] .tab-bar {
+    background: rgba(255, 255, 255, 0.92);
+}
+
+[data-theme="light"] .hero-avatar img {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .avatar-status.online {
+    border-color: var(--bg-primary);
+}
+
+[data-theme="light"] .stat-number {
+    color: var(--primary);
+}
+
+[data-theme="light"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* ===== MIDNIGHT BLUE THEME ===== */
+[data-theme="midnight"] {
+    --primary: #64D2FF;
+    --primary-light: #5E5CE6;
+    --secondary: #BF5AF2;
+    --accent: #FF375F;
+    --success: #30D158;
+    --warning: #FFD60A;
+    --bg-primary: #0A1628;
+    --bg-secondary: #0F1E36;
+    --bg-tertiary: #162A4A;
+    --bg-elevated: #1E3A5F;
+    --text-primary: #E8F0FE;
+    --text-secondary: #8BA4C7;
+    --text-tertiary: #5A7BA5;
+    --separator: rgba(100, 210, 255, 0.1);
+    --glass-bg: rgba(15, 30, 54, 0.78);
+    --glass-border: rgba(100, 210, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="midnight"] .bg-mesh {
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(100, 210, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(191, 90, 242, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255, 55, 95, 0.04) 0%, transparent 50%);
+}
+
+[data-theme="midnight"] .orb-1 {
+    background: #64D2FF;
+}
+
+[data-theme="midnight"] .orb-2 {
+    background: #BF5AF2;
+}
+
+[data-theme="midnight"] .orb-3 {
+    background: #FF375F;
+}
+
+[data-theme="midnight"] .status-bar {
+    background: rgba(10, 22, 40, 0.9);
+}
+
+[data-theme="midnight"] .tab-bar {
+    background: rgba(10, 22, 40, 0.92);
+}
+
+[data-theme="midnight"] .badge-pro {
+    background: linear-gradient(135deg, #64D2FF, #5E5CE6);
+}
+
+[data-theme="midnight"] .badge-verified {
+    background: rgba(48, 209, 88, 0.12);
+    border-color: rgba(48, 209, 88, 0.25);
+}
+
+[data-theme="midnight"] .project-icon-wrapper.api {
+    background: linear-gradient(135deg, #30D158, #64D2FF);
+}
+
+[data-theme="midnight"] .project-icon-wrapper.bot {
+    background: linear-gradient(135deg, #FFD60A, #FF9F0A);
+}
+
+[data-theme="midnight"] .project-icon-wrapper.web {
+    background: linear-gradient(135deg, #64D2FF, #5E5CE6);
+}
+
+[data-theme="midnight"] .project-icon-wrapper.finance {
+    background: linear-gradient(135deg, #5E5CE6, #BF5AF2);
+}
+
+[data-theme="midnight"] .skill-fill {
+    background: linear-gradient(90deg, #64D2FF, #5E5CE6);
+}
+
+[data-theme="midnight"] .btn-primary {
+    background: #64D2FF;
+    color: #0A1628;
+}
+
+[data-theme="midnight"] .btn-primary:hover {
+    background: #8ADEFF;
+    box-shadow: 0 4px 16px rgba(100, 210, 255, 0.3);
+}
+
+[data-theme="midnight"] .filter-tab.active {
+    background: #64D2FF;
+    color: #0A1628;
+}
+
+[data-theme="midnight"] .theme-btn.active {
+    background: #64D2FF;
+    color: #0A1628;
+}
+
+[data-theme="midnight"] .project-link.primary {
+    background: #64D2FF;
+    color: #0A1628;
+}
+
+[data-theme="midnight"] .info-item i {
+    background: rgba(100, 210, 255, 0.12);
+    color: #64D2FF;
+}
+
+[data-theme="midnight"] .tool-card i {
+    color: #64D2FF;
+}
+
+[data-theme="midnight"] .skill-chip:hover {
+    background: rgba(100, 210, 255, 0.1);
+    color: #64D2FF;
+    border-color: rgba(100, 210, 255, 0.25);
+}
+
+[data-theme="midnight"] .social-card i {
+    color: #64D2FF;
+}
+
+[data-theme="midnight"] .social-card:hover {
+    background: rgba(100, 210, 255, 0.06);
+    border-color: rgba(100, 210, 255, 0.2);
+}
+
+[data-theme="midnight"] .achievement-icon.gold {
+    background: linear-gradient(135deg, #FFD60A, #FF9F0A);
+}
+
+/* ===== THEME TRANSITION ===== */
+body,
+.glass-card,
+.status-bar,
+.tab-bar,
+.btn,
+.filter-tab,
+.theme-btn,
+.project-link,
+.skill-fill,
+.form-group input,
+.form-group textarea,
+.social-card,
+.tool-card,
+.tech-chip,
+.skill-chip,
+.badge,
+.project-badge,
+.modal-sheet,
+.info-item i {
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Desktop theme switcher positioning */
+@media (min-width: 1024px) {
+    .theme-switcher {
+        top: 14px;
+        right: 24px;
+    }
+}

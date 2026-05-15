@@ -4,6 +4,7 @@
    =================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initThemeSwitcher();
     initStatusBar();
     initScrollAnimations();
     initTabBar();
@@ -12,6 +13,34 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     initSkillBars();
 });
+
+/* ===== Theme Switcher (3 Modes) ===== */
+function initThemeSwitcher() {
+    const themeBtns = document.querySelectorAll('.theme-btn');
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+
+    // Apply saved theme
+    applyTheme(savedTheme);
+
+    themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            applyTheme(theme);
+            localStorage.setItem('portfolio-theme', theme);
+
+            // Update active button
+            themeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    function applyTheme(theme) {
+        document.body.setAttribute('data-theme', theme);
+        themeBtns.forEach(b => {
+            b.classList.toggle('active', b.dataset.theme === theme);
+        });
+    }
+}
 
 /* ===== Status Bar Clock ===== */
 function initStatusBar() {
