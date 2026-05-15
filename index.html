@@ -10,22 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="app.css">
-    <!-- Lottie Player -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
+    <!-- Devicon (language icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
 </head>
 <body>
 
-    <!-- INTRO OVERLAY (Lottie Splash) -->
+    <!-- INTRO OVERLAY (CSS Animated) -->
     <div class="intro-overlay" id="introOverlay">
-        <lottie-player
-            class="intro-lottie"
-            src="https://lottie.host/e4e9a850-e4f3-4960-8425-bc39af01f8f5/mYDXiJVnxc.json"
-            background="transparent"
-            speed="1"
-            autoplay
-        ></lottie-player>
-        <p class="intro-text">Loading experience...</p>
-        <button class="intro-skip">Tap to skip</button>
+        <div class="intro-icon">
+            <i class="fas fa-code"></i>
+        </div>
+        <h2 class="intro-name">Ayogi Akbar</h2>
+        <p class="intro-text">Loading...</p>
+        <div class="intro-bar"><div class="intro-fill"></div></div>
     </div>
 
     <!-- BG -->
@@ -111,7 +108,7 @@
             <p class="muted-note">More projects coming soon...</p>
         </section>
 
-        <!-- SKILLS (Circular Charts) -->
+        <!-- SKILLS -->
         <section id="skills" class="section" data-anim>
             <h2 class="section-title">Skills</h2>
 
@@ -119,34 +116,46 @@
                 <h4 class="card-subtitle"><i class="fas fa-chart-pie"></i> Proficiency</h4>
                 <div class="charts-grid">
                     <div class="chart-item">
-                        <svg class="chart-svg" viewBox="0 0 100 100">
-                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="80"/>
-                        </svg>
+                        <div class="chart-icon-wrap">
+                            <svg class="chart-svg" viewBox="0 0 100 100">
+                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="80"/>
+                            </svg>
+                            <i class="devicon-html5-plain chart-lang-icon"></i>
+                        </div>
                         <div class="chart-num">0%</div>
                         <div class="chart-label">HTML/CSS</div>
                     </div>
                     <div class="chart-item">
-                        <svg class="chart-svg" viewBox="0 0 100 100">
-                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="75"/>
-                        </svg>
+                        <div class="chart-icon-wrap">
+                            <svg class="chart-svg" viewBox="0 0 100 100">
+                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="75"/>
+                            </svg>
+                            <i class="devicon-php-plain chart-lang-icon"></i>
+                        </div>
                         <div class="chart-num">0%</div>
                         <div class="chart-label">PHP</div>
                     </div>
                     <div class="chart-item">
-                        <svg class="chart-svg" viewBox="0 0 100 100">
-                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="65"/>
-                        </svg>
+                        <div class="chart-icon-wrap">
+                            <svg class="chart-svg" viewBox="0 0 100 100">
+                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="65"/>
+                            </svg>
+                            <i class="devicon-javascript-plain chart-lang-icon"></i>
+                        </div>
                         <div class="chart-num">0%</div>
                         <div class="chart-label">JavaScript</div>
                     </div>
                     <div class="chart-item">
-                        <svg class="chart-svg" viewBox="0 0 100 100">
-                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="50"/>
-                        </svg>
+                        <div class="chart-icon-wrap">
+                            <svg class="chart-svg" viewBox="0 0 100 100">
+                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="50"/>
+                            </svg>
+                            <i class="devicon-python-plain chart-lang-icon"></i>
+                        </div>
                         <div class="chart-num">0%</div>
                         <div class="chart-label">Python</div>
                     </div>
@@ -170,22 +179,7 @@
             </div>
         </section>
 
-        <!-- MINI GAME -->
-        <section id="game" class="section" data-anim>
-            <h2 class="section-title">Mini Game</h2>
 
-            <div class="card game-card">
-                <div class="game-header">
-                    <div class="game-info">
-                        <span>Score: <strong id="gameScore">0</strong></span>
-                        <span>Time: <strong id="gameTimer">10s</strong></span>
-                    </div>
-                    <button class="btn btn-primary btn-sm" id="gameStart"><i class="fas fa-play"></i> Start</button>
-                </div>
-                <div class="game-area" id="gameArea"></div>
-                <p class="muted-note">Tap the circles as fast as you can!</p>
-            </div>
-        </section>
 
         <!-- CONTACT -->
         <section id="contact" class="section" data-anim>
