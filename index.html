@@ -10,38 +10,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="app.css">
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
 </head>
 <body>
 
-    <!-- Background Effects -->
-    <div class="bg-gradient"></div>
-    <div class="bg-noise"></div>
+    <!-- INTRO OVERLAY (Lottie Splash) -->
+    <div class="intro-overlay" id="introOverlay">
+        <lottie-player
+            class="intro-lottie"
+            src="https://lottie.host/e4e9a850-e4f3-4960-8425-bc39af01f8f5/mYDXiJVnxc.json"
+            background="transparent"
+            speed="1"
+            autoplay
+        ></lottie-player>
+        <p class="intro-text">Loading experience...</p>
+        <button class="intro-skip">Tap to skip</button>
+    </div>
 
-    <!-- Theme Toggle (floating) -->
+    <!-- BG -->
+    <div class="bg-gradient"></div>
+
+    <!-- Theme Toggle -->
     <div class="theme-toggle" id="themeToggle">
-        <button class="theme-btn active" data-theme="dark" aria-label="Dark mode"><i class="fas fa-moon"></i></button>
-        <button class="theme-btn" data-theme="light" aria-label="Light mode"><i class="fas fa-sun"></i></button>
-        <button class="theme-btn" data-theme="midnight" aria-label="Midnight mode"><i class="fas fa-star"></i></button>
+        <button class="theme-btn active" data-theme="dark" aria-label="Dark"><i class="fas fa-moon"></i></button>
+        <button class="theme-btn" data-theme="light" aria-label="Light"><i class="fas fa-sun"></i></button>
+        <button class="theme-btn" data-theme="midnight" aria-label="Midnight"><i class="fas fa-star"></i></button>
     </div>
 
     <!-- Status Bar -->
     <header class="statusbar">
         <span class="statusbar-time" id="clock"></span>
         <span class="statusbar-title">Portfolio</span>
-        <span class="statusbar-icons">
-            <i class="fas fa-signal"></i>
-            <i class="fas fa-wifi"></i>
-            <i class="fas fa-battery-full"></i>
-        </span>
+        <span class="statusbar-icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></span>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main -->
     <main class="container">
 
         <!-- HERO -->
-        <section id="home" class="section hero" data-anim="fade">
+        <section id="home" class="section hero" data-anim>
             <div class="hero-avatar">
-                <img src="gio.jpg" alt="Ayogi Akbar" loading="lazy">
+                <img src="gio.jpg" alt="Ayogi Akbar" loading="eager">
                 <span class="avatar-online"></span>
             </div>
             <h1 class="hero-name">Ayogi Akbar</h1>
@@ -53,7 +63,7 @@
             <div class="hero-stats">
                 <div class="stat"><strong>3+</strong><span>Years</span></div>
                 <div class="stat"><strong>6</strong><span>Projects</span></div>
-                <div class="stat"><strong>100%</strong><span>Passion</span></div>
+                <div class="stat"><strong>100</strong><span>Passion</span></div>
             </div>
             <div class="hero-actions">
                 <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Projects</a>
@@ -62,7 +72,7 @@
         </section>
 
         <!-- ABOUT -->
-        <section id="about" class="section" data-anim="fade">
+        <section id="about" class="section" data-anim>
             <h2 class="section-title">About</h2>
             <div class="card">
                 <div class="info-grid">
@@ -76,17 +86,16 @@
         </section>
 
         <!-- PROJECTS -->
-        <section id="projects" class="section" data-anim="fade">
+        <section id="projects" class="section" data-anim>
             <h2 class="section-title">Projects</h2>
 
-            <!-- REST API Card -->
             <div class="card project-card">
                 <div class="project-header">
                     <div class="project-icon"><i class="fas fa-server"></i></div>
                     <span class="chip chip-green">LIVE</span>
                 </div>
                 <h3 class="project-name">Exsala REST API</h3>
-                <p class="project-desc">Public REST API service for developers. Various endpoints: AI tools, downloader, converter, search, and more. Fast, reliable, free to use.</p>
+                <p class="project-desc">Public REST API for developers. Various endpoints: AI tools, downloader, converter, search, and more. Fast, reliable, free.</p>
                 <div class="project-tech">
                     <span class="tag">Node.js</span>
                     <span class="tag">Express</span>
@@ -102,17 +111,45 @@
             <p class="muted-note">More projects coming soon...</p>
         </section>
 
-        <!-- SKILLS -->
-        <section id="skills" class="section" data-anim="fade">
+        <!-- SKILLS (Circular Charts) -->
+        <section id="skills" class="section" data-anim>
             <h2 class="section-title">Skills</h2>
 
             <div class="card">
-                <h4 class="card-subtitle"><i class="fas fa-code"></i> Languages</h4>
-                <div class="skill-bars">
-                    <div class="skill-row"><span>PHP</span><div class="bar"><div class="fill" data-w="75"></div></div><span class="pct">75%</span></div>
-                    <div class="skill-row"><span>HTML/CSS</span><div class="bar"><div class="fill" data-w="80"></div></div><span class="pct">80%</span></div>
-                    <div class="skill-row"><span>JavaScript</span><div class="bar"><div class="fill" data-w="65"></div></div><span class="pct">65%</span></div>
-                    <div class="skill-row"><span>Python</span><div class="bar"><div class="fill" data-w="50"></div></div><span class="pct">50%</span></div>
+                <h4 class="card-subtitle"><i class="fas fa-chart-pie"></i> Proficiency</h4>
+                <div class="charts-grid">
+                    <div class="chart-item">
+                        <svg class="chart-svg" viewBox="0 0 100 100">
+                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="80"/>
+                        </svg>
+                        <div class="chart-num">0%</div>
+                        <div class="chart-label">HTML/CSS</div>
+                    </div>
+                    <div class="chart-item">
+                        <svg class="chart-svg" viewBox="0 0 100 100">
+                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="75"/>
+                        </svg>
+                        <div class="chart-num">0%</div>
+                        <div class="chart-label">PHP</div>
+                    </div>
+                    <div class="chart-item">
+                        <svg class="chart-svg" viewBox="0 0 100 100">
+                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="65"/>
+                        </svg>
+                        <div class="chart-num">0%</div>
+                        <div class="chart-label">JavaScript</div>
+                    </div>
+                    <div class="chart-item">
+                        <svg class="chart-svg" viewBox="0 0 100 100">
+                            <circle class="chart-bg" cx="50" cy="50" r="40"/>
+                            <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="50"/>
+                        </svg>
+                        <div class="chart-num">0%</div>
+                        <div class="chart-label">Python</div>
+                    </div>
                 </div>
             </div>
 
@@ -133,8 +170,25 @@
             </div>
         </section>
 
+        <!-- MINI GAME -->
+        <section id="game" class="section" data-anim>
+            <h2 class="section-title">Mini Game</h2>
+
+            <div class="card game-card">
+                <div class="game-header">
+                    <div class="game-info">
+                        <span>Score: <strong id="gameScore">0</strong></span>
+                        <span>Time: <strong id="gameTimer">10s</strong></span>
+                    </div>
+                    <button class="btn btn-primary btn-sm" id="gameStart"><i class="fas fa-play"></i> Start</button>
+                </div>
+                <div class="game-area" id="gameArea"></div>
+                <p class="muted-note">Tap the circles as fast as you can!</p>
+            </div>
+        </section>
+
         <!-- CONTACT -->
-        <section id="contact" class="section" data-anim="fade">
+        <section id="contact" class="section" data-anim>
             <h2 class="section-title">Contact</h2>
 
             <div class="card">
@@ -147,17 +201,17 @@
             </div>
 
             <div class="social-row">
-                <a href="https://github.com/giienew" target="_blank" class="social-btn"><i class="fab fa-github"></i></a>
-                <a href="https://api.whatsapp.com/send?phone=6282173230348" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://instagram.com/only_babygio" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
-                <a href="https://exsalapi.my.id" target="_blank" class="social-btn"><i class="fas fa-server"></i></a>
-                <a href="https://facebook.com/ayogi" target="_blank" class="social-btn"><i class="fab fa-facebook"></i></a>
+                <a href="https://github.com/giienew" target="_blank" class="social-btn" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://api.whatsapp.com/send?phone=6282173230348" target="_blank" class="social-btn" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://instagram.com/only_babygio" target="_blank" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://exsalapi.my.id" target="_blank" class="social-btn" aria-label="API"><i class="fas fa-server"></i></a>
+                <a href="https://facebook.com/ayogi" target="_blank" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
             </div>
         </section>
 
     </main>
 
-    <!-- Bottom Tab Bar -->
+    <!-- Tab Bar -->
     <nav class="tabbar" id="tabbar">
         <a href="#home" class="tab active" data-section="home"><i class="fas fa-home"></i><span>Home</span></a>
         <a href="#about" class="tab" data-section="about"><i class="fas fa-user"></i><span>About</span></a>

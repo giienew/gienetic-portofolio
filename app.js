@@ -1,317 +1,217 @@
 /* ============================
-   APP.JS — Interactive Portfolio
-   Real developer feel, not template BS
+   APP.JS — Premium iOS Portfolio
+   Full Interactive, Lottie Intro,
+   Sound Design, Mini Game
    ============================ */
 
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    Loader.init();
-    Sound.init();
+    Intro.init();
+    SFX.init();
     Theme.init();
     Clock.init();
-    Scroll.init();
+    ScrollFX.init();
     TabBar.init();
-    Skills.init();
+    SkillCharts.init();
     Contact.init();
     Ripple.init();
-    Tilt.init();
-    Counter.init();
-    Particles.init();
+    Game.init();
 });
 
-/* ===== LOADER (Skeleton → Content) ===== */
-const Loader = {
+/* ===== INTRO SPLASH (Lottie) ===== */
+const Intro = {
     init() {
-        document.body.classList.add('loading');
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.body.classList.remove('loading');
-                document.body.classList.add('loaded');
-            }, 300);
+        const overlay = document.getElementById('introOverlay');
+        if (!overlay) return;
+
+        // Auto dismiss after animation completes
+        setTimeout(() => {
+            overlay.classList.add('dismiss');
+            document.body.classList.add('ready');
+            setTimeout(() => overlay.remove(), 800);
+        }, 2800);
+
+        // Skip on tap
+        overlay.addEventListener('click', () => {
+            overlay.classList.add('dismiss');
+            document.body.classList.add('ready');
+            setTimeout(() => overlay.remove(), 600);
         });
     }
 };
 
-/* ===== SOUND ENGINE (Multi-tone, realistic) ===== */
-const Sound = {
+/* ===== SOUND DESIGN (Distinct per action) ===== */
+const SFX = {
     ctx: null,
-    enabled: true,
+    ready: false,
 
     init() {
-        const activate = () => {
+        const wake = () => {
             if (!this.ctx) {
                 this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                this.ready = true;
             }
-            document.removeEventListener('pointerdown', activate);
-            document.removeEventListener('touchstart', activate);
+            document.removeEventListener('pointerdown', wake);
+            document.removeEventListener('touchstart', wake);
         };
-        document.addEventListener('pointerdown', activate);
-        document.addEventListener('touchstart', activate);
+        document.addEventListener('pointerdown', wake);
+        document.addEventListener('touchstart', wake);
+
+        // Scroll sound (throttled)
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const now = Date.now();
+            if (now - lastScroll > 400) {
+                this.scroll();
+                lastScroll = now;
+            }
+        }, { passive: true });
     },
 
-    // Subtle click — like iOS keyboard tap
+    // Soft tap — button/card press
     tap() {
-        if (!this.ctx || !this.enabled) return;
-        try {
-            const t = this.ctx.currentTime;
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(1800, t);
-            osc.frequency.exponentialRampToValueAtTime(800, t + 0.04);
-            gain.gain.setValueAtTime(0.06, t);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
-            osc.start(t);
-            osc.stop(t + 0.05);
-        } catch(e) {}
+        if (!this.ready) return;
+        this._play([
+            { type: 'sine', freq: [1400, 900], dur: 0.045, vol: 0.05 }
+        ]);
     },
 
-    // Navigation switch sound
+    // Navigation switch — two-tone chime
     nav() {
-        if (!this.ctx || !this.enabled) return;
-        try {
-            const t = this.ctx.currentTime;
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(600, t);
-            osc.frequency.setValueAtTime(900, t + 0.05);
-            gain.gain.setValueAtTime(0.04, t);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
-            osc.start(t);
-            osc.stop(t + 0.1);
-        } catch(e) {}
+        if (!this.ready) return;
+        this._play([
+            { type: 'sine', freq: [700, 1050], dur: 0.07, vol: 0.04 },
+            { type: 'sine', freq: [1050, 1400], dur: 0.07, vol: 0.03, delay: 0.06 }
+        ]);
     },
 
-    // Success / send
+    // Section open / reveal
+    open() {
+        if (!this.ready) return;
+        this._play([
+            { type: 'triangle', freq: [300, 600], dur: 0.12, vol: 0.035 },
+            { type: 'sine', freq: [600, 900], dur: 0.1, vol: 0.025, delay: 0.08 }
+        ]);
+    },
+
+    // Scroll tick — very subtle
+    scroll() {
+        if (!this.ready) return;
+        this._play([
+            { type: 'sine', freq: [2200, 1800], dur: 0.025, vol: 0.015 }
+        ]);
+    },
+
+    // Theme switch — whoosh
+    theme() {
+        if (!this.ready) return;
+        this._play([
+            { type: 'sine', freq: [400, 1100], dur: 0.1, vol: 0.04 },
+            { type: 'triangle', freq: [800, 500], dur: 0.08, vol: 0.025, delay: 0.08 }
+        ]);
+    },
+
+    // Success — ascending triad
     success() {
-        if (!this.ctx || !this.enabled) return;
-        try {
-            const t = this.ctx.currentTime;
-            [880, 1100, 1320].forEach((freq, i) => {
+        if (!this.ready) return;
+        this._play([
+            { type: 'sine', freq: [700, 700], dur: 0.1, vol: 0.04 },
+            { type: 'sine', freq: [900, 900], dur: 0.1, vol: 0.035, delay: 0.09 },
+            { type: 'sine', freq: [1200, 1200], dur: 0.12, vol: 0.03, delay: 0.18 }
+        ]);
+    },
+
+    // Error — descending buzz
+    error() {
+        if (!this.ready) return;
+        this._play([
+            { type: 'sawtooth', freq: [300, 180], dur: 0.15, vol: 0.03 }
+        ]);
+    },
+
+    // Game tap
+    gameTap() {
+        if (!this.ready) return;
+        this._play([
+            { type: 'square', freq: [800, 1200], dur: 0.04, vol: 0.04 }
+        ]);
+    },
+
+    // Game over
+    gameOver() {
+        if (!this.ready) return;
+        this._play([
+            { type: 'sawtooth', freq: [500, 200], dur: 0.2, vol: 0.04 },
+            { type: 'sine', freq: [200, 100], dur: 0.3, vol: 0.03, delay: 0.15 }
+        ]);
+    },
+
+    // Internal: play array of tone configs
+    _play(tones) {
+        if (!this.ctx) return;
+        const t = this.ctx.currentTime;
+        tones.forEach(cfg => {
+            try {
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0, t + i * 0.08);
-                gain.gain.linearRampToValueAtTime(0.05, t + i * 0.08 + 0.02);
-                gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.08 + 0.15);
-                osc.start(t + i * 0.08);
-                osc.stop(t + i * 0.08 + 0.15);
-            });
-        } catch(e) {}
-    },
-
-    // Theme switch
-    toggle() {
-        if (!this.ctx || !this.enabled) return;
-        try {
-            const t = this.ctx.currentTime;
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(400, t);
-            osc.frequency.exponentialRampToValueAtTime(1200, t + 0.08);
-            osc.frequency.exponentialRampToValueAtTime(800, t + 0.12);
-            gain.gain.setValueAtTime(0.05, t);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
-            osc.start(t);
-            osc.stop(t + 0.14);
-        } catch(e) {}
-    },
-
-    // Error
-    error() {
-        if (!this.ctx || !this.enabled) return;
-        try {
-            const t = this.ctx.currentTime;
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(200, t);
-            osc.frequency.setValueAtTime(150, t + 0.1);
-            gain.gain.setValueAtTime(0.04, t);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
-            osc.start(t);
-            osc.stop(t + 0.2);
-        } catch(e) {}
+                osc.type = cfg.type;
+                const start = t + (cfg.delay || 0);
+                osc.frequency.setValueAtTime(cfg.freq[0], start);
+                osc.frequency.exponentialRampToValueAtTime(cfg.freq[1], start + cfg.dur);
+                gain.gain.setValueAtTime(cfg.vol, start);
+                gain.gain.exponentialRampToValueAtTime(0.001, start + cfg.dur + 0.01);
+                osc.start(start);
+                osc.stop(start + cfg.dur + 0.02);
+            } catch(e) {}
+        });
     }
 };
 
-/* ===== RIPPLE EFFECT (Material-style on tap) ===== */
+/* ===== RIPPLE + HAPTIC ===== */
 const Ripple = {
     init() {
-        document.querySelectorAll('.btn, .tab, .social-btn, .stat, .theme-btn, .tag, .card').forEach(el => {
+        document.querySelectorAll('.btn, .tab, .social-btn, .stat, .theme-btn, .tag, .chip, .game-area').forEach(el => {
             el.style.position = el.style.position || 'relative';
             el.style.overflow = 'hidden';
-            el.addEventListener('pointerdown', (e) => this.create(e, el));
+            el.addEventListener('pointerdown', (e) => this.fire(e, el));
         });
     },
 
-    create(e, el) {
+    fire(e, el) {
         const rect = el.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height) * 2;
+        const size = Math.max(rect.width, rect.height) * 2.2;
         const x = e.clientX - rect.left - size / 2;
         const y = e.clientY - rect.top - size / 2;
-
-        const ripple = document.createElement('span');
-        ripple.className = 'ripple-effect';
-        ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
-        el.appendChild(ripple);
-
-        Sound.tap();
-
-        ripple.addEventListener('animationend', () => ripple.remove());
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        r.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+        el.appendChild(r);
+        r.addEventListener('animationend', () => r.remove());
     }
 };
 
-/* ===== 3D TILT on Cards ===== */
-const Tilt = {
-    init() {
-        if (window.matchMedia('(hover: none)').matches) return; // Skip on touch devices
-        
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width;
-                const y = (e.clientY - rect.top) / rect.height;
-                const rotateX = (y - 0.5) * -6;
-                const rotateY = (x - 0.5) * 6;
-                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-    }
-};
-
-/* ===== ANIMATED COUNTER ===== */
-const Counter = {
-    init() {
-        const stats = document.querySelectorAll('.stat strong');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.animate(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.8 });
-
-        stats.forEach(el => observer.observe(el));
-    },
-
-    animate(el) {
-        const text = el.textContent;
-        const match = text.match(/(\d+)/);
-        if (!match) return;
-
-        const target = parseInt(match[1]);
-        const suffix = text.replace(match[1], '');
-        let current = 0;
-        const step = Math.ceil(target / 30);
-        const interval = setInterval(() => {
-            current += step;
-            if (current >= target) {
-                current = target;
-                clearInterval(interval);
-            }
-            el.textContent = current + suffix;
-        }, 30);
-    }
-};
-
-/* ===== PARTICLES (Subtle floating dots) ===== */
-const Particles = {
-    init() {
-        const canvas = document.createElement('canvas');
-        canvas.id = 'particles';
-        canvas.style.cssText = 'position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0.4';
-        document.body.prepend(canvas);
-
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let w, h;
-
-        const resize = () => {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        };
-        resize();
-        window.addEventListener('resize', resize);
-
-        // Create particles
-        for (let i = 0; i < 30; i++) {
-            particles.push({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                size: Math.random() * 2 + 0.5,
-                alpha: Math.random() * 0.3 + 0.1
-            });
-        }
-
-        const draw = () => {
-            ctx.clearRect(0, 0, w, h);
-            const color = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#007AFF';
-
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                if (p.x < 0) p.x = w;
-                if (p.x > w) p.x = 0;
-                if (p.y < 0) p.y = h;
-                if (p.y > h) p.y = 0;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = color;
-                ctx.globalAlpha = p.alpha;
-                ctx.fill();
-            });
-
-            requestAnimationFrame(draw);
-        };
-        draw();
-    }
-};
-
-/* ===== THEME MODULE ===== */
+/* ===== THEME (3 modes) ===== */
 const Theme = {
     init() {
         const saved = localStorage.getItem('theme') || 'dark';
-        this.apply(saved);
+        this.set(saved);
 
         document.querySelectorAll('.theme-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const t = btn.dataset.theme;
-                this.apply(t);
-                localStorage.setItem('theme', t);
-                Sound.toggle();
-                Toast.show(`${t.charAt(0).toUpperCase() + t.slice(1)} mode activated`, 'info');
+                this.set(btn.dataset.theme);
+                localStorage.setItem('theme', btn.dataset.theme);
+                SFX.theme();
+                Toast.show(`${btn.dataset.theme.charAt(0).toUpperCase() + btn.dataset.theme.slice(1)} mode`, 'info');
             });
         });
     },
 
-    apply(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        document.querySelectorAll('.theme-btn').forEach(b => {
-            b.classList.toggle('active', b.dataset.theme === theme);
-        });
+    set(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
     }
 };
 
@@ -320,25 +220,24 @@ const Clock = {
     init() {
         const el = document.getElementById('clock');
         if (!el) return;
-        const update = () => {
-            el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-        };
-        update();
-        setInterval(update, 30000);
+        const tick = () => { el.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); };
+        tick();
+        setInterval(tick, 30000);
     }
 };
 
 /* ===== SCROLL ANIMATIONS ===== */
-const Scroll = {
+const ScrollFX = {
     init() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    SFX.open();
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
 
         document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
     }
@@ -356,8 +255,8 @@ const TabBar = {
                 const target = document.getElementById(tab.getAttribute('href').substring(1));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
-                    this.setActive(tab, tabs);
-                    Sound.nav();
+                    this.activate(tab, tabs);
+                    SFX.nav();
                 }
             });
         });
@@ -366,35 +265,50 @@ const TabBar = {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const t = document.querySelector(`.tab[data-section="${entry.target.id}"]`);
-                    if (t) this.setActive(t, tabs);
+                    if (t) this.activate(t, tabs);
                 }
             });
-        }, { threshold: 0.3, rootMargin: '-15% 0px -50% 0px' });
-
+        }, { threshold: 0.3, rootMargin: '-10% 0px -55% 0px' });
         sections.forEach(s => spy.observe(s));
     },
 
-    setActive(active, all) {
+    activate(active, all) {
         all.forEach(t => t.classList.remove('active'));
         active.classList.add('active');
     }
 };
 
-/* ===== SKILL BARS ===== */
-const Skills = {
+/* ===== ANIMATED CIRCULAR SKILL CHARTS ===== */
+const SkillCharts = {
     init() {
-        const fills = document.querySelectorAll('.fill');
+        const charts = document.querySelectorAll('.chart-ring');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.style.width = entry.target.dataset.w + '%';
-                    }, 200);
-                    observer.unobserve(entry.target);
+                    const ring = entry.target;
+                    const pct = ring.dataset.pct;
+                    const circumference = 2 * Math.PI * 40; // r=40
+                    const offset = circumference - (pct / 100) * circumference;
+                    ring.style.strokeDashoffset = offset;
+                    // Animate number
+                    const numEl = ring.closest('.chart-item').querySelector('.chart-num');
+                    this.countUp(numEl, pct);
+                    observer.unobserve(ring);
                 }
             });
         }, { threshold: 0.5 });
-        fills.forEach(f => observer.observe(f));
+
+        charts.forEach(c => observer.observe(c));
+    },
+
+    countUp(el, target) {
+        let current = 0;
+        const step = Math.max(1, Math.ceil(target / 40));
+        const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(interval); }
+            el.textContent = current + '%';
+        }, 25);
     }
 };
 
@@ -411,36 +325,112 @@ const Contact = {
             const msg = document.getElementById('fmsg').value.trim();
 
             if (!name || !msg) {
-                Sound.error();
-                Toast.show('Please fill name & message!', 'error');
+                SFX.error();
+                Toast.show('Fill name & message!', 'error');
+                // Shake the form
+                form.classList.add('shake');
+                setTimeout(() => form.classList.remove('shake'), 500);
                 return;
             }
 
             const text = `*Portfolio Contact*\n\n*Name:* ${name}\n*Email:* ${email || '-'}\n\n*Message:*\n${msg}`;
             window.open(`https://wa.me/6282173230348?text=${encodeURIComponent(text)}`, '_blank');
-            Sound.success();
+            SFX.success();
             Toast.show('Opening WhatsApp...', 'success');
             form.reset();
         });
     }
 };
 
-/* ===== TOAST NOTIFICATIONS ===== */
+/* ===== MINI GAME: Tap Speed Challenge ===== */
+const Game = {
+    score: 0,
+    timer: null,
+    timeLeft: 0,
+    active: false,
+
+    init() {
+        const startBtn = document.getElementById('gameStart');
+        const area = document.getElementById('gameArea');
+        const scoreEl = document.getElementById('gameScore');
+        const timerEl = document.getElementById('gameTimer');
+        if (!startBtn || !area) return;
+
+        startBtn.addEventListener('click', () => {
+            if (this.active) return;
+            this.start(area, scoreEl, timerEl, startBtn);
+            SFX.nav();
+        });
+
+        area.addEventListener('pointerdown', (e) => {
+            if (!this.active) return;
+            const target = e.target;
+            if (target.classList.contains('game-target')) {
+                this.score++;
+                scoreEl.textContent = this.score;
+                target.remove();
+                this.spawn(area);
+                SFX.gameTap();
+                // Visual feedback
+                area.style.transform = 'scale(0.98)';
+                setTimeout(() => area.style.transform = '', 80);
+            }
+        });
+    },
+
+    start(area, scoreEl, timerEl, startBtn) {
+        this.score = 0;
+        this.timeLeft = 10;
+        this.active = true;
+        scoreEl.textContent = '0';
+        timerEl.textContent = '10s';
+        startBtn.textContent = 'Playing...';
+        startBtn.disabled = true;
+        area.innerHTML = '';
+
+        this.spawn(area);
+
+        this.timer = setInterval(() => {
+            this.timeLeft--;
+            timerEl.textContent = this.timeLeft + 's';
+            if (this.timeLeft <= 0) {
+                this.end(area, startBtn);
+            }
+        }, 1000);
+    },
+
+    spawn(area) {
+        const target = document.createElement('div');
+        target.className = 'game-target';
+        const maxX = area.clientWidth - 44;
+        const maxY = area.clientHeight - 44;
+        target.style.left = Math.random() * maxX + 'px';
+        target.style.top = Math.random() * maxY + 'px';
+        area.appendChild(target);
+    },
+
+    end(area, startBtn) {
+        clearInterval(this.timer);
+        this.active = false;
+        area.innerHTML = `<div class="game-result">🎉 ${this.score} taps!</div>`;
+        startBtn.textContent = 'Play Again';
+        startBtn.disabled = false;
+        SFX.gameOver();
+        Toast.show(`Score: ${this.score} taps in 10s!`, 'success');
+    }
+};
+
+/* ===== TOAST ===== */
 const Toast = {
     show(msg, type = 'info') {
-        const existing = document.querySelector('.toast');
-        if (existing) existing.remove();
-
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${msg}`;
-        document.body.appendChild(toast);
-
-        requestAnimationFrame(() => toast.classList.add('show'));
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 2500);
+        const old = document.querySelector('.toast');
+        if (old) old.remove();
+        const t = document.createElement('div');
+        t.className = `toast toast-${type}`;
+        const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle';
+        t.innerHTML = `<i class="fas fa-${icon}"></i> ${msg}`;
+        document.body.appendChild(t);
+        requestAnimationFrame(() => t.classList.add('show'));
+        setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
     }
 };
