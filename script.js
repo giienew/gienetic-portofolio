@@ -1,1089 +1,417 @@
-// Global audio variables
-let backgroundMusic;
-let isMusicPlaying = false;
+/* ===================================
+   Portfolio Script — iOS 2026 Style
+   Ayogi Akbar
+   =================================== */
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize audio system
-    initAudioSystem();
-
-    // Navigation functionality
-    const navLinks = document.querySelectorAll('.retro-nav a');
-    const contentSections = document.querySelectorAll('.content-section');
-
-    // Set current date in signature
-    updateSignatureDate();
-
-    // Initialize typing animations
-    initTypingEffects();
-
-    // Initialize skill bar animations
-    setupSkillBarObserver();
-
-    // Setup profile section observer
-    setupProfileObserver();
-
-    // Add pixelated image effects
-    setupPixelImageEffects();
-
-    // Konami code easter egg
-    setupKonamiCode();
-
-    // Form submission handler
-    setupFormSubmission();
-
-    // Navigation click handlers
-    navLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Get the target section ID
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-
-            // Update active states
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
-            this.classList.add('active');
-
-            contentSections.forEach(section => section.classList.remove('active'));
-            targetSection.classList.add('active');
-
-            // Scroll to top of the section
-            targetSection.scrollIntoView({ behavior: 'smooth' });
-
-            // For mobile, close menu after selection
-            if (window.innerWidth <= 768) {
-                document.body.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // Play click sound
-            playClickSound();
-        });
-    });
-
-    // Auto-activate section based on scroll position
-    window.addEventListener('scroll', throttle(handleScroll, 100));
-
-    // Add click sound to buttons
-    const buttons = document.querySelectorAll('.retro-btn, .clickable-stat');
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            playClickSound();
-        });
-    });
-
-    // Initialize projects section observer
-    const projectsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                initProjectsSection();
-                projectsObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    const projectsSection = document.querySelector('#projects');
-    if (projectsSection) {
-        projectsObserver.observe(projectsSection);
-    }
-
-    // Initialize achievements section observer
-    const achievementsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                initAchievementsSection();
-                achievementsObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    const achievementsSection = document.querySelector('#achievements');
-    if (achievementsSection) {
-        achievementsObserver.observe(achievementsSection);
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeSwitcher();
+    initStatusBar();
+    initScrollAnimations();
+    initTabBar();
+    initProjectFilters();
+    initProjectModal();
+    initContactForm();
+    initSkillBars();
 });
 
-// Audio System Initialization
-function initAudioSystem() {
-    try {
-        // Create audio element
-        backgroundMusic = new Audio();
+/* ===== Theme Switcher (3 Modes) ===== */
+function initThemeSwitcher() {
+    const themeBtns = document.querySelectorAll('.theme-btn');
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
 
-        // Try primary source first
-        backgroundMusic.src = 'audio/background.mp3'; // Local file
-        backgroundMusic.loop = true;
-        backgroundMusic.volume = 0.8;
-        backgroundMusic.preload = 'auto';
+    // Apply saved theme
+    applyTheme(savedTheme);
 
-        // Error handling
-        backgroundMusic.addEventListener('error', function () {
-            console.error('Error loading background music:', backgroundMusic.error);
-            // Fallback to online source
-            backgroundMusic.src = 'https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3';
-            backgroundMusic.load();
+    themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            applyTheme(theme);
+            localStorage.setItem('portfolio-theme', theme);
+
+            // Update active button
+            themeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         });
-
-        // Music control button
-        const musicToggle = document.getElementById('music-toggle');
-
-        if (musicToggle) {
-            musicToggle.addEventListener('click', async function () {
-                try {
-                    if (isMusicPlaying) {
-                        await backgroundMusic.pause();
-                        musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    } else {
-                        await backgroundMusic.play();
-                        musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-                    }
-                    isMusicPlaying = !isMusicPlaying;
-                    playClickSound();
-                } catch (error) {
-                    console.error('Audio playback failed:', error);
-                    musicToggle.style.display = 'none';
-                }
-            });
-        }
-
-        // Preload audio after user interaction
-        document.addEventListener('click', function initAudioInteraction() {
-            try {
-                backgroundMusic.play().then(() => {
-                    backgroundMusic.pause();
-                    backgroundMusic.currentTime = 0;
-                }).catch(e => {
-                    console.log('Audio preload interaction failed:', e);
-                });
-                document.removeEventListener('click', initAudioInteraction);
-            } catch (e) {
-                console.error('Audio init interaction failed:', e);
-            }
-        }, { once: true });
-
-    } catch (e) {
-        console.error('Audio system initialization failed:', e);
-    }
-}
-
-
-// Update signature date with current date
-function updateSignatureDate() {
-    const now = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const dateString = now.toLocaleDateString('en-US', options).toUpperCase();
-    const dateElement = document.querySelector('.signature-date');
-    if (dateElement) {
-        dateElement.textContent = `[${dateString}]`;
-    }
-}
-
-// Initialize all typing effects
-function initTypingEffects() {
-    // Profile text typing animation
-    const profileTexts = document.querySelectorAll('.terminal-line .output');
-
-    profileTexts.forEach((textElement, index) => {
-        const fullText = textElement.textContent;
-        textElement.textContent = '';
-
-        setTimeout(() => {
-            let i = 0;
-            const typingInterval = setInterval(() => {
-                if (i < fullText.length) {
-                    textElement.textContent += fullText.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(typingInterval);
-                }
-            }, 80 + (index * 10)); // Stagger the animations
-        }, 800 * index);
     });
+
+    function applyTheme(theme) {
+        document.body.setAttribute('data-theme', theme);
+        themeBtns.forEach(b => {
+            b.classList.toggle('active', b.dataset.theme === theme);
+        });
+    }
 }
 
-// Animate skill bars when they come into view
-function setupSkillBarObserver() {
-    const skillBars = document.querySelectorAll('.bar-fill');
+/* ===== Status Bar Clock ===== */
+function initStatusBar() {
+    const timeEl = document.getElementById('statusTime');
+    if (!timeEl) return;
+
+    function updateTime() {
+        const now = new Date();
+        timeEl.textContent = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+    }
+
+    updateTime();
+    setInterval(updateTime, 30000);
+}
+
+/* ===== Scroll Animations (Intersection Observer) ===== */
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('[data-animate]');
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const bar = entry.target;
-                const width = bar.dataset.value || bar.style.width;
-                bar.style.width = '0';
-
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
+                entry.target.classList.add('animated');
+                observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.5 });
-
-    skillBars.forEach(bar => {
-        observer.observe(bar);
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
     });
+
+    animatedElements.forEach(el => observer.observe(el));
 }
 
-// Setup observer for profile section animations
-function setupProfileObserver() {
-    const profileObserver = new IntersectionObserver((entries) => {
+/* ===== Tab Bar Navigation ===== */
+function initTabBar() {
+    const tabs = document.querySelectorAll('.tab-item');
+    const sections = document.querySelectorAll('.section');
+
+    // Click handler
+    tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = tab.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+                setActiveTab(tab);
+            }
+        });
+    });
+
+    // Scroll spy
+    const scrollObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                typeBio();
-                profileObserver.unobserve(entry.target);
+                const id = entry.target.getAttribute('id');
+                const correspondingTab = document.querySelector(`.tab-item[data-section="${id}"]`);
+                if (correspondingTab) {
+                    setActiveTab(correspondingTab);
+                }
             }
         });
-    }, { threshold: 0.1 });
+    }, {
+        threshold: 0.3,
+        rootMargin: '-20% 0px -50% 0px'
+    });
 
-    const profileSection = document.querySelector('#profile');
-    if (profileSection) {
-        profileObserver.observe(profileSection);
+    sections.forEach(section => scrollObserver.observe(section));
+
+    function setActiveTab(activeTab) {
+        tabs.forEach(t => t.classList.remove('active'));
+        activeTab.classList.add('active');
     }
 }
 
-// Typewriter effect for biography text
-function typeBio() {
-    const bioElement = document.querySelector('.retro-bio');
-    if (!bioElement) return;
+/* ===== Project Filters ===== */
+function initProjectFilters() {
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const projectCards = document.querySelectorAll('.project-card');
 
-    const fullBio = bioElement.textContent;
-    bioElement.textContent = '';
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Update active tab
+            filterTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
 
-    let i = 0;
-    const typingInterval = setInterval(() => {
-        if (i < fullBio.length) {
-            bioElement.textContent += fullBio.charAt(i);
-            i++;
-        } else {
-            clearInterval(typingInterval);
-            // After bio finishes, start typing the core skills
-            typeCoreSkills();
-        }
-    }, 30);
-}
+            const filter = tab.dataset.filter;
 
-// Typewriter effect for core skills
-function typeCoreSkills() {
-    const skillTexts = document.querySelectorAll('.skill-text');
-    skillTexts.forEach((item, index) => {
-        const fullText = item.textContent;
-        item.textContent = '';
-
-        setTimeout(() => {
-            let j = 0;
-            const skillInterval = setInterval(() => {
-                if (j < fullText.length) {
-                    item.textContent += fullText.charAt(j);
-                    j++;
+            // Filter cards with animation
+            projectCards.forEach(card => {
+                const category = card.dataset.category;
+                if (filter === 'all' || category === filter) {
+                    card.style.display = '';
+                    card.style.animation = 'fadeInUp 0.4s ease forwards';
                 } else {
-                    clearInterval(skillInterval);
+                    card.style.animation = 'fadeOut 0.2s ease forwards';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 200);
                 }
-            }, 30);
-        }, index * 500); // Stagger each skill item
-    });
-
-    // Make the section visible
-    const coreSkillsSection = document.querySelector('.core-skills-section');
-    if (coreSkillsSection) {
-        coreSkillsSection.style.opacity = '1';
-    }
-}
-
-// Add pixelated effect to images on hover
-function setupPixelImageEffects() {
-    const pixelImages = document.querySelectorAll('.pixelated');
-    pixelImages.forEach(img => {
-        img.style.imageRendering = 'pixelated';
-
-        img.addEventListener('mouseenter', () => {
-            img.style.imageRendering = 'auto';
-        });
-
-        img.addEventListener('mouseleave', () => {
-            img.style.imageRendering = 'pixelated';
+            });
         });
     });
-}
 
-// Easter Egg Audio with better handling
-function setupKonamiCode() {
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-        'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let konamiIndex = 0;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-
-            if (konamiIndex === konamiCode.length) {
-                activateEasterEgg();
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;
+    // Add animation keyframes dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-    });
-}
-
-function activateEasterEgg() {
-    try {
-        // Pause main music if playing
-        if (isMusicPlaying && backgroundMusic) {
-            backgroundMusic.pause();
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(10px); }
         }
-
-        // Create new audio element for Easter egg
-        const easterEggMusic = new Audio();
-        easterEggMusic.src = 'audio/easter-egg.mp3'; // Local fallback
-        easterEggMusic.loop = true;
-        easterEggMusic.volume = 0.5;
-
-        // Try to play with fallback
-        easterEggMusic.play().catch(e => {
-            console.log('Easter egg music fallback:', e);
-            easterEggMusic.src = 'https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-668.mp3';
-            easterEggMusic.play().catch(e => console.error('Fallback also failed:', e));
-        });
-
-        // Visual effects
-        document.body.style.backgroundColor = '#0000ff';
-        document.body.style.color = '#ffff00';
-
-        const gameElements = document.createElement('div');
-        gameElements.innerHTML = `
-            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; text-align: center;">
-                <div style="font-size: 24px; color: #ffff00; margin-bottom: 20px;">SECRET LEVEL UNLOCKED!</div>
-                <div style="font-size: 16px; color: #ffffff;">30 LIVES ADDED</div>
-            </div>
-        `;
-        document.body.appendChild(gameElements);
-
-        // Play sound effect
-        playEasterEggSound();
-
-        // Reset after 5 seconds
-        setTimeout(() => {
-            document.body.style.backgroundColor = '';
-            document.body.style.color = '';
-            gameElements.remove();
-            easterEggMusic.pause();
-
-            // Resume background music if it was playing
-            if (isMusicPlaying && backgroundMusic) {
-                backgroundMusic.play().catch(e => console.log('Music resume prevented:', e));
-            }
-        }, 5000);
-
-    } catch (e) {
-        console.error('Easter egg activation failed:', e);
-    }
-}// Easter Egg Audio with better handling
-function setupKonamiCode() {
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-        'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let konamiIndex = 0;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-
-            if (konamiIndex === konamiCode.length) {
-                activateEasterEgg();
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;
-        }
-    });
-}
-
-function activateEasterEgg() {
-    try {
-        // Pause main music if playing
-        if (isMusicPlaying && backgroundMusic) {
-            backgroundMusic.pause();
-        }
-
-        // Create new audio element for Easter egg
-        const easterEggMusic = new Audio();
-        easterEggMusic.src = 'audio/easter-egg.mp3'; // Local fallback
-        easterEggMusic.loop = true;
-        easterEggMusic.volume = 0.5;
-
-        // Try to play with fallback
-        easterEggMusic.play().catch(e => {
-            console.log('Easter egg music fallback:', e);
-            easterEggMusic.src = 'https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-668.mp3';
-            easterEggMusic.play().catch(e => console.error('Fallback also failed:', e));
-        });
-
-        // Visual effects
-        document.body.style.backgroundColor = '#0000ff';
-        document.body.style.color = '#ffff00';
-
-        const gameElements = document.createElement('div');
-        gameElements.innerHTML = `
-            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; text-align: center;">
-                <div style="font-size: 24px; color: #ffff00; margin-bottom: 20px;">SECRET LEVEL UNLOCKED!</div>
-                <div style="font-size: 16px; color: #ffffff;">30 LIVES ADDED</div>
-            </div>
-        `;
-        document.body.appendChild(gameElements);
-
-        // Play sound effect
-        playEasterEggSound();
-
-        // Reset after 5 seconds
-        setTimeout(() => {
-            document.body.style.backgroundColor = '';
-            document.body.style.color = '';
-            gameElements.remove();
-            easterEggMusic.pause();
-
-            // Resume background music if it was playing
-            if (isMusicPlaying && backgroundMusic) {
-                backgroundMusic.play().catch(e => console.log('Music resume prevented:', e));
-            }
-        }, 5000);
-
-    } catch (e) {
-        console.error('Easter egg activation failed:', e);
-    }
-}
-
-function setupFormSubmission() {
-    const contactForm = document.getElementById('contactForm');
-    if (!contactForm) return;
-
-    contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        // Get form values
-        const formData = {
-            name: document.getElementById('name').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            subject: document.getElementById('subject').value.trim(),
-            message: document.getElementById('message').value.trim()
-        };
-
-        // Validate required fields
-        if (!formData.name || !formData.message) {
-            showAlert('ERROR', 'NAME AND MESSAGE ARE REQUIRED!');
-            return;
-        }
-
-        // Format WhatsApp message
-        const whatsappMessage = formatWhatsAppMessage(formData);
-
-        // Show confirmation alert
-        showAlert(
-            'CONFIRM SEND',
-            `Send this message to WhatsApp?\n\n${whatsappMessage.replace(/\*/g, '')}`,
-            () => sendToWhatsApp(whatsappMessage) // Proceed callback
-        );
-    });
-}
-
-function formatWhatsAppMessage(data) {
-    return [
-        '*AYOGI WEBSITE MESSAGE*',
-        '',
-        `*Name:* ${data.name}`,
-        `*Email:* ${data.email || 'Not provided'}`,
-        `*Subject:* ${data.subject || 'No subject'}`,
-        '',
-        `*Message:*`,
-        data.message
-    ].join('\n');
-}
-
-function sendToWhatsApp(message) {
-    try {
-        const encodedMessage = encodeURIComponent(message)
-            .replace(/\n/g, '%0A')     // Newlines
-            .replace(/'/g, '%27')      // Apostrophes
-            .replace(/\(/g, '%28')     // Parentheses
-            .replace(/\)/g, '%29');
-
-        window.open(`https://wa.me/6282173230348?text=${encodedMessage}`, '_blank');
-    } catch (error) {
-        console.error('WhatsApp Error:', error);
-        showAlert('ERROR', 'Failed to open WhatsApp!');
-    }
-}
-
-function showAlert(title, message, confirmCallback) {
-    // Remove existing alerts
-    const existingAlert = document.querySelector('.retro-alert');
-    if (existingAlert) existingAlert.remove();
-
-    // Create alert element
-    const alertBox = document.createElement('div');
-    alertBox.className = 'retro-alert';
-
-    // Style the alert box (compact version)
-    Object.assign(alertBox.style, {
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: '#000',
-        border: '2px solid #0f0',
-        padding: '15px',
-        zIndex: '9999',
-        maxWidth: '280px',
-        width: '90%',
-        textAlign: 'center',
-        fontFamily: "'Courier New', monospace",
-        color: '#0f0',
-        fontSize: '13px'
-    });
-
-    // Alert content with Cancel button
-    alertBox.innerHTML = `
-        <div style="margin-bottom:10px;font-weight:bold;border-bottom:1px solid #0f0;padding-bottom:5px;">
-            ${title}
-        </div>
-        <div style="margin-bottom:15px;white-space:pre-line;max-height:200px;overflow-y:auto;">
-            ${message}
-        </div>
-        <div style="display:flex;gap:10px;justify-content:center;">
-            <button id="alert-cancel" style="flex:1;background:#333;color:#0f0;border:1px solid #0f0;padding:5px;cursor:pointer;">
-                CANCEL
-            </button>
-            <button id="alert-confirm" style="flex:1;background:#0f0;color:#000;border:none;padding:5px;cursor:pointer;">
-                OK
-            </button>
-        </div>
     `;
-
-    document.body.appendChild(alertBox);
-
-    // Button handlers
-    document.getElementById('alert-cancel').addEventListener('click', () => {
-        alertBox.remove();
-    });
-
-    document.getElementById('alert-confirm').addEventListener('click', () => {
-        alertBox.remove();
-        if (confirmCallback) confirmCallback();
-    });
-
-    // Close on Escape key
-    const handleKeyDown = (e) => {
-        if (e.key === 'Escape') {
-            alertBox.remove();
-            document.removeEventListener('keydown', handleKeyDown);
-        }
-    };
-    document.addEventListener('keydown', handleKeyDown);
+    document.head.appendChild(style);
 }
 
-// Handle scroll to update active navigation
-function handleScroll() {
-    const scrollPosition = window.scrollY + 100;
-    const navLinks = document.querySelectorAll('.retro-nav a');
-    const contentSections = document.querySelectorAll('.content-section');
-
-    contentSections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            const id = section.getAttribute('id');
-            const correspondingNavLink = document.querySelector(`.retro-nav a[href="#${id}"]`);
-
-            if (correspondingNavLink && !correspondingNavLink.classList.contains('active')) {
-                navLinks.forEach(link => link.classList.remove('active'));
-                correspondingNavLink.classList.add('active');
-            }
-        }
-    });
-}
-
-// Throttle function for scroll events
-function throttle(func, limit) {
-    let lastFunc;
-    let lastRan;
-    return function () {
-        const context = this;
-        const args = arguments;
-        if (!lastRan) {
-            func.apply(context, args);
-            lastRan = Date.now();
-        } else {
-            clearTimeout(lastFunc);
-            lastFunc = setTimeout(function () {
-                if ((Date.now() - lastRan) >= limit) {
-                    func.apply(context, args);
-                    lastRan = Date.now();
-                }
-            }, limit - (Date.now() - lastRan));
-        }
-    };
-}
-
-// Sound effects with better error handling
-function playClickSound() {
-    try {
-        const audio = new Audio();
-        audio.src = 'audio/click.mp3'; // Local file
-        audio.volume = 0.3;
-        audio.play().catch(e => {
-            console.log('Click sound fallback:', e);
-            audio.src = 'https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3';
-            audio.play().catch(e => console.error('Fallback click sound failed:', e));
-        });
-    } catch (e) {
-        console.error('Click sound failed:', e);
-    }
-}
-
-function playEasterEggSound() {
-    try {
-        const audio = new Audio();
-        audio.src = 'audio/achievement.mp3'; // Local file
-        audio.volume = 0.2;
-        audio.play().catch(e => {
-            console.log('Easter egg sound fallback:', e);
-            audio.src = 'https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3';
-            audio.play().catch(e => console.error('Fallback achievement sound failed:', e));
-        });
-    } catch (e) {
-        console.error('Easter egg sound failed:', e);
-    }
-}
-
-// Projects Section Functionality
-function initProjectsSection() {
-    // Sample project data (replace with your actual project data)
-    const projects = {
-        'BOT WHATSAPP MD': {
-            title: 'WhatsApp bot source 2025',
-            category: 'Web APIs',
+/* ===== Project Modal ===== */
+function initProjectModal() {
+    const projectData = {
+        'exsala-api': {
+            title: 'Exsala REST API',
+            category: 'API',
             date: '2025',
-            description: 'WhatsApp Multi-Device bot built using the Baileys library. Supports automated replies, group management, media handling, and integration with external APIs. Designed for smooth operation, real-time interaction, and customizable features.',
-            tech: ['HTML/CSS', 'JavaScript', 'API', 'Chart.js'],
-            images: [
-                'assets/images/dashboard317/menubot.png',
-
-            ],
-            demoUrl: 'https://chat.whatsapp.com/FGraEUnCIsUIhzgee0C0CR',
-            codeUrl: 'codemaaf.html'
+            description: 'Public REST API service built for developers. Provides various endpoints including AI tools, downloader, converter, and more. Built with Node.js and Express for high performance and reliability.',
+            tech: ['Node.js', 'Express', 'REST API', 'JSON'],
+            images: [],
+            demoUrl: 'https://exsalapi.my.id'
         },
-        'Dashboard Sales Report': {
-            title: 'Dashboard Sales Report',
-            category: 'Data',
-            date: '2023',
-            description: 'Excel automation for daily sales data processing and visualization. This tool automatically imports sales data, cleans it, and generates comprehensive reports with pivot tables and charts.',
-            tech: ['Excel', 'Spreadsheet', 'Google Form'],
-            images: [
-                'assets/images/sales/dashboard.png',
-            ],
-            demoUrl: 'https://docs.google.com/spreadsheets/d/1oOXCgLSf6V_OOR700lDdNjtD5r2JHCbeJUJZ4bxTW-g/edit?usp=sharing',
-            codeUrl: 'codemaaf.html'
+        'whatsapp-bot': {
+            title: 'WhatsApp Bot Multi-Device',
+            category: 'Bot / Tools',
+            date: '2025',
+            description: 'WhatsApp Multi-Device bot built using the Baileys library. Supports automated replies, group management, media handling, and integration with external APIs. Designed for smooth operation and real-time interaction.',
+            tech: ['JavaScript', 'Node.js', 'Baileys', 'API Integration'],
+            images: ['assets/images/dashboard317/menubot.png'],
+            demoUrl: 'https://chat.whatsapp.com/FGraEUnCIsUIhzgee0C0CR'
         },
-        'Tracking Banking': {
-            title: 'Tracking Banking',
-            category: 'Web',
-            date: '2024',
-            description: 'Web application for tracking income and expenses with user authentication and data visualization. Helps users manage their finances with categorized transactions and monthly summaries.',
+        'koperasi': {
+            title: 'Unit Usaha Koperasi 317',
+            category: 'Web App',
+            date: '2025',
+            description: 'Full-featured web application for cooperative business unit management. Includes sales transactions, receipt generation, Excel report export, user management, and product settings.',
             tech: ['PHP', 'Bootstrap', 'MySQL', 'Chart.js'],
             images: [
+                'assets/images/koperasi/dashboard.png',
+                'assets/images/koperasi/login.png',
+                'assets/images/koperasi/transaksi.png',
+                'assets/images/koperasi/riwayat-transaksi.png',
+                'assets/images/koperasi/laporan.png',
+                'assets/images/koperasi/contoh-report-excel.png',
+                'assets/images/koperasi/contoh-struk.png',
+                'assets/images/koperasi/profile.png',
+                'assets/images/koperasi/setting-produk.png'
+            ],
+            demoUrl: 'http://debang.my.id/koperasi'
+        },
+        'tracking-banking': {
+            title: 'Tracking Banking',
+            category: 'Web App',
+            date: '2024',
+            description: 'Finance tracking web application with user authentication and data visualization. Helps users manage their finances with categorized transactions, monthly summaries, and visual reports.',
+            tech: ['PHP', 'Bootstrap', 'MySQL', 'Chart.js'],
+            images: [
+                'assets/images/sallary/dashboard.png',
                 'assets/images/sallary/login.png',
                 'assets/images/sallary/register.png',
-                'assets/images/sallary/dashboard.png',
                 'assets/images/sallary/report.png',
                 'assets/images/sallary/pemasukan.png',
                 'assets/images/sallary/pengeluaran.png',
-                'assets/images/sallary/profile-setting.png',
-                'assets/images/sallary/details-setting.png',
-                'assets/images/sallary/user-setting.png',
-                'assets/images/sallary/history-setting.png',
+                'assets/images/sallary/profile-setting.png'
             ],
-            demoUrl: 'aksesmaaf.html',
-            codeUrl: 'codemaaf.html'
-        },
-        'Unit Usaha Koperasi 317': {
-            title: 'Unit Usaha Koperasi 317',
-            category: 'Web',
-            date: '2025',
-            description: 'Web application for Unit Usaha 317 do they Activity for Sale and Report Unit.',
-            tech: ['PHP', 'Bootstrap', 'MySQL', 'Chart.js'],
-            images: [
-                'assets/images/koperasi/login.png',
-                'assets/images/koperasi/register.png',
-                'assets/images/koperasi/dashboard.png',
-                'assets/images/koperasi/transaksi.png',
-                'assets/images/koperasi/riwayat-transaksi.png',
-                'assets/images/koperasi/contoh-report-excel.png',
-                'assets/images/koperasi/contoh-struk.png',
-                'assets/images/koperasi/laporan.png',
-                'assets/images/koperasi/profile.png',
-                'assets/images/koperasi/setting-produk.png',
-                'assets/images/koperasi/setting-set.png',
-                'assets/images/koperasi/setting-user.png',
-                'assets/images/koperasi/setting-trx.png',
-            ],
-            demoUrl: 'http://debang.my.id/koperasi',
-            codeUrl: 'codemaaf.html'
-        },
-        'Long Avatar WhatsApp': {
-            title: 'Change Your Profile for Web',
-            category: 'Web',
-            date: '2025',
-            description: 'Picture Profile Long Whatsapp',
-            tech: ['HTML', 'CSS', 'Java Script'],
-            images: [
-                'assets/images/snt/pppanjang.png',
-                'assets/images/snt/pppanjang2.png',
-            ],
-            demoUrl: 'https://pepekpanjang.up.railway.app/',
-            codeUrl: 'codemaaf.html'
+            demoUrl: null
         }
     };
 
-    // Get modal elements
     const modal = document.getElementById('projectModal');
-    const closeModal = document.getElementById('closeModal');
-    const mobileCloseModal = document.getElementById('mobileCloseModal'); // Fix: Add this line
-    const mainPreviewImage = document.getElementById('mainPreviewImage');
-    const projectTitle = document.getElementById('projectTitle');
-    const projectCategory = document.getElementById('projectCategory');
-    const projectDate = document.getElementById('projectDate');
-    const projectFullDescription = document.getElementById('projectFullDescription');
-    const projectTechTags = document.getElementById('projectTechTags');
-    const thumbnailsContainer = document.querySelector('.thumbnails-container');
-    const demoBtn = document.querySelector('#projectModal .project-actions .retro-btn.primary');
-    const codeBtn = document.querySelector('#projectModal .project-actions .retro-btn.secondary');
+    const closeBtn = document.getElementById('closeModal');
+    const detailBtns = document.querySelectorAll('.project-detail-btn');
 
-    // Make modal more mobile-friendly
-    function adjustModalForMobile() {
-        if (window.innerWidth <= 768) {
-            modal.style.alignItems = 'flex-start';
-            modal.style.paddingTop = '20px';
-            modal.style.paddingBottom = '80px';
-            const bottomNavHeight = 60;
-            modal.style.paddingBottom = `${bottomNavHeight + 20}px`;
-        } else {
-            modal.style.alignItems = 'center';
-            modal.style.paddingTop = '0';
-            modal.style.paddingBottom = '0';
-        }
-    }
+    detailBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const projectKey = btn.dataset.project;
+            const project = projectData[projectKey];
+            if (!project) return;
 
-    adjustModalForMobile();
-    window.addEventListener('resize', adjustModalForMobile);
+            // Fill modal content
+            document.getElementById('modalTitle').textContent = project.title;
+            document.getElementById('modalCategory').textContent = project.category;
+            document.getElementById('modalDate').textContent = project.date;
+            document.getElementById('modalDescription').textContent = project.description;
 
-    // Set up event listeners for project preview buttons
-    document.querySelectorAll('.project-preview-btn').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            const projectItem = this.closest('.project-item');
-            const projectName = projectItem.querySelector('h3').textContent;
+            // Tech chips
+            const techContainer = document.getElementById('modalTech');
+            techContainer.innerHTML = project.tech.map(t =>
+                `<span class="tech-chip">${t}</span>`
+            ).join('');
 
-            if (projects[projectName]) {
-                const project = projects[projectName];
+            // Main image
+            const mainImg = document.getElementById('modalMainImage');
+            if (project.images.length > 0) {
+                mainImg.src = project.images[0];
+                mainImg.style.display = 'block';
+            } else {
+                mainImg.style.display = 'none';
+            }
 
-                // Set main content
-                projectTitle.textContent = project.title;
-                projectCategory.textContent = project.category;
-                projectDate.textContent = project.date;
-                projectFullDescription.textContent = project.description;
-
-                // Set tech tags
-                projectTechTags.innerHTML = '';
-                project.tech.forEach(tag => {
-                    const span = document.createElement('span');
-                    span.textContent = tag;
-                    projectTechTags.appendChild(span);
-                });
-
-                // Set images
-                mainPreviewImage.src = project.images[0];
-                mainPreviewImage.alt = project.title;
-
-                // Set thumbnails
-                thumbnailsContainer.innerHTML = '';
+            // Thumbnails
+            const thumbContainer = document.getElementById('modalThumbnails');
+            thumbContainer.innerHTML = '';
+            if (project.images.length > 1) {
                 project.images.forEach((img, index) => {
-                    const thumb = document.createElement('div');
-                    thumb.className = 'thumbnail-item' + (index === 0 ? ' active' : '');
-                    thumb.innerHTML = `<img src="${img}" alt="Thumbnail ${index + 1}">`;
-                    thumb.addEventListener('click', function () {
-                        mainPreviewImage.src = img;
-                        document.querySelectorAll('.thumbnail-item').forEach(t => t.classList.remove('active'));
-                        this.classList.add('active');
+                    const thumb = document.createElement('img');
+                    thumb.src = img;
+                    thumb.alt = `Screenshot ${index + 1}`;
+                    if (index === 0) thumb.classList.add('active');
+                    thumb.addEventListener('click', () => {
+                        mainImg.src = img;
+                        thumbContainer.querySelectorAll('img').forEach(t => t.classList.remove('active'));
+                        thumb.classList.add('active');
                     });
-                    thumbnailsContainer.appendChild(thumb);
+                    thumbContainer.appendChild(thumb);
                 });
-
-                // Update action buttons
-                demoBtn.onclick = function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.open(project.demoUrl, '_blank');
-                };
-
-                codeBtn.onclick = function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.open(project.codeUrl, '_blank');
-                };
-
-                // Show modal
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
             }
-        });
-    });
 
-    // Close modal functions
-    function closeModalHandler() {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    closeModal.addEventListener('click', closeModalHandler);
-
-    if (mobileCloseModal) {
-        mobileCloseModal.addEventListener('click', closeModalHandler);
-    }
-
-    // Close modal when clicking outside content
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) {
-            closeModalHandler();
-        }
-    });
-}
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', initProjectsSection);
-
-// Filter projects
-const filterButtons = document.querySelectorAll('.filter-btn');
-const projectItems = document.querySelectorAll('.project-item');
-
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        // Update active state
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-
-        const filterValue = button.dataset.filter;
-
-        // Filter projects
-        projectItems.forEach(item => {
-            if (filterValue === 'all' || item.dataset.category === filterValue) {
-                item.style.display = 'block';
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                }, 50);
+            // Demo link
+            const demoLink = document.getElementById('modalDemoLink');
+            if (project.demoUrl) {
+                demoLink.href = project.demoUrl;
+                demoLink.style.display = 'inline-flex';
             } else {
-                item.style.opacity = '0';
-                setTimeout(() => {
-                    item.style.display = 'none';
-                }, 300);
+                demoLink.style.display = 'none';
             }
-        });
 
-        // Play click sound
-        playClickSound();
-    });
-});
-
-// Search functionality
-const searchInput = document.querySelector('.search-input');
-if (searchInput) {
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        projectItems.forEach(item => {
-            const itemText = item.textContent.toLowerCase();
-            if (itemText.includes(searchTerm)) {
-                item.style.display = 'block';
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                }, 50);
-            } else {
-                item.style.opacity = '0';
-                setTimeout(() => {
-                    item.style.display = 'none';
-                }, 300);
-            }
-        });
-    });
-}
-
-// Achievement Section Functionality
-function initAchievementsSection() {
-    // Data sertifikat untuk setiap achievement
-    const achievementData = {
-        "Kompetensi Keahlian Code Editing": {
-            imageUrl: "assets/images/sertifikasi/kompetensi.png",
-            description: "Sertifikat Kopetensi Code"
-        },
-        "Design Visual Grafis Editing": {
-            imageUrl: "assets/images/sertifikasi/kompetensi2.png",
-            description: "Nilai Sertifikat Kopetensi Kejuruan Keahlian"
-        },
-    };
-
-    // Buat modal element
-    const modal = document.createElement('div');
-    modal.className = 'achievement-modal';
-    modal.innerHTML = `
-        <span class="modal-close">&times;</span>
-        <div class="certificate-container">
-            <img class="certificate-image" src="" alt="Certificate">
-            <p class="certificate-desc"></p>
-        </div>
-    `;
-    document.body.appendChild(modal);
-
-    // Tambahkan event listener untuk achievement items
-    const trophyItems = document.querySelectorAll('.trophy-item');
-    trophyItems.forEach(item => {
-        item.addEventListener('click', function () {
-            const title = this.querySelector('h3').textContent;
-            const achievement = achievementData[title];
-
-            if (achievement) {
-                const img = modal.querySelector('.certificate-image');
-                const desc = modal.querySelector('.certificate-desc');
-
-                // Set image dan description
-                img.src = achievement.imageUrl;
-                img.alt = title;
-                img.classList.remove('rotate-in');
-
-                desc.textContent = achievement.description;
-
-                // Tampilkan modal
-                modal.classList.add('active');
-
-                // Trigger animation setelah DOM update
-                setTimeout(() => {
-                    img.classList.add('rotate-in');
-                }, 10);
-
-                // Play sound effect
-                playAchievementSound();
-            }
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         });
     });
 
     // Close modal
-    modal.querySelector('.modal-close').addEventListener('click', () => {
+    function closeModal() {
         modal.classList.remove('active');
-        playClickSound();
-    });
+        document.body.style.overflow = '';
+    }
 
-    // Close ketika klik di luar modal
+    closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-            playClickSound();
-        }
+        if (e.target === modal) closeModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
     });
 }
 
-// Sound effect khusus achievement
-function playAchievementSound() {
-    try {
-        const audio = new Audio('audio/achievement.mp3');
-        audio.volume = 0.5; // Naikkan volume sedikit
-        audio.play().catch(e => {
-            console.log('Audio play failed:', e);
-            // Fallback: Coba play setelah interaksi user
-            document.addEventListener('click', function handler() {
-                audio.play().catch(console.error);
-                document.removeEventListener('click', handler);
-            }, { once: true });
+/* ===== Contact Form ===== */
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        if (!name || !message) {
+            showToast('Please fill in Name and Message', 'error');
+            return;
+        }
+
+        const waMessage = [
+            `*Portfolio Contact*`,
+            ``,
+            `*Name:* ${name}`,
+            `*Email:* ${email || 'Not provided'}`,
+            `*Subject:* ${subject || 'No subject'}`,
+            ``,
+            `*Message:*`,
+            message
+        ].join('\n');
+
+        const encoded = encodeURIComponent(waMessage);
+        window.open(`https://wa.me/6282173230348?text=${encoded}`, '_blank');
+        showToast('Opening WhatsApp...', 'success');
+    });
+}
+
+/* ===== Skill Bars Animation ===== */
+function initSkillBars() {
+    const skillFills = document.querySelectorAll('.skill-fill');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const fill = entry.target;
+                const width = fill.dataset.width;
+                setTimeout(() => {
+                    fill.style.width = width + '%';
+                }, 200);
+                observer.unobserve(fill);
+            }
         });
-    } catch (e) {
-        console.log('Audio error:', e);
-    }
-}
-// Add this to handle browser autoplay restrictions
-document.addEventListener('click', async function firstInteraction() {
-    try {
-        await backgroundMusic.play();
-        backgroundMusic.pause();
-        backgroundMusic.currentTime = 0;
-    } catch (e) {
-        console.log('Audio preload failed:', e);
-    }
-    document.removeEventListener('click', firstInteraction);
-}, { once: true });
+    }, { threshold: 0.5 });
 
-// Variabel global
-let audioContext;
-let musicBuffer;
-let musicSource;
-const musicToggle = document.getElementById('musicToggle');
-
-// Fungsi untuk inisialisasi audio
-async function initAudio() {
-    try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const response = await fetch('background.mp3');
-        musicBuffer = await audioContext.decodeAudioData(await response.arrayBuffer());
-
-        // Set event listener untuk tombol setelah audio siap
-        musicToggle.addEventListener('click', toggleMusic);
-        musicToggle.style.display = 'block'; // Tampilkan tombol setelah audio siap
-    } catch (error) {
-        console.error('Audio initialization failed:', error);
-        musicToggle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> NO MUSIC';
-        musicToggle.disabled = true;
-    }
+    skillFills.forEach(fill => observer.observe(fill));
 }
 
-// Fungsi untuk toggle music
-function toggleMusic() {
-    if (!isMusicPlaying) {
-        // Jika audio context dalam suspended state (karena autoplay policy), resume dulu
-        if (audioContext.state === 'suspended') {
-            audioContext.resume();
-        }
+/* ===== Toast Notification ===== */
+function showToast(message, type = 'info') {
+    // Remove existing toast
+    const existing = document.querySelector('.toast-notification');
+    if (existing) existing.remove();
 
-        musicSource = audioContext.createBufferSource();
-        musicSource.buffer = musicBuffer;
-        musicSource.loop = true;
-        musicSource.connect(audioContext.destination);
-        musicSource.start();
-        musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-        isMusicPlaying = true;
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.textContent = message;
 
-        // Handle ketika musik selesai (seharusnya tidak terjadi karena loop=true)
-        musicSource.onended = () => {
-            isMusicPlaying = false;
-            musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-        };
+    Object.assign(toast.style, {
+        position: 'fixed',
+        top: '80px',
+        left: '50%',
+        transform: 'translateX(-50%) translateY(-20px)',
+        padding: '12px 24px',
+        borderRadius: '12px',
+        fontSize: '13px',
+        fontWeight: '600',
+        zIndex: '3000',
+        opacity: '0',
+        transition: 'all 0.3s ease',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        maxWidth: '90%',
+        textAlign: 'center'
+    });
+
+    if (type === 'success') {
+        toast.style.background = 'rgba(52, 199, 89, 0.9)';
+        toast.style.color = 'white';
+    } else if (type === 'error') {
+        toast.style.background = 'rgba(255, 59, 48, 0.9)';
+        toast.style.color = 'white';
     } else {
-        musicSource.stop();
-        musicSource = null;
-        musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-        isMusicPlaying = false;
+        toast.style.background = 'rgba(0, 122, 255, 0.9)';
+        toast.style.color = 'white';
     }
+
+    document.body.appendChild(toast);
+
+    // Animate in
+    requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+    });
+
+    // Remove after 3s
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(-20px)';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
-
-// Handler untuk interaksi pertama (mengatasi autoplay restrictions)
-document.addEventListener('click', async function firstInteraction() {
-    try {
-        // Coba init audio setelah interaksi pertama
-        await initAudio();
-
-        // Untuk beberapa browser, perlu memulai context audio dulu
-        if (audioContext && audioContext.state === 'suspended') {
-            await audioContext.resume();
-        }
-    } catch (e) {
-        console.log('Audio initialization failed:', e);
-    }
-
-    // Hapus event listener setelah interaksi pertama
-    document.removeEventListener('click', firstInteraction);
-}, { once: true });
-
-// Sembunyikan tombol sampai audio siap
-musicToggle.style.display = 'none';
