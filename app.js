@@ -16,27 +16,26 @@ document.addEventListener('DOMContentLoaded', () => {
     SkillCharts.init();
     Contact.init();
     Ripple.init();
-    Game.init();
 });
 
-/* ===== INTRO SPLASH (Lottie) ===== */
+/* ===== INTRO SPLASH (CSS Animated) ===== */
 const Intro = {
     init() {
         const overlay = document.getElementById('introOverlay');
         if (!overlay) return;
 
-        // Auto dismiss after animation completes
+        // Auto dismiss after loading bar finishes (2.2s)
         setTimeout(() => {
             overlay.classList.add('dismiss');
             document.body.classList.add('ready');
-            setTimeout(() => overlay.remove(), 800);
-        }, 2800);
+            setTimeout(() => overlay.remove(), 600);
+        }, 2200);
 
         // Skip on tap
         overlay.addEventListener('click', () => {
             overlay.classList.add('dismiss');
             document.body.classList.add('ready');
-            setTimeout(() => overlay.remove(), 600);
+            setTimeout(() => overlay.remove(), 400);
         });
     }
 };
@@ -57,16 +56,6 @@ const SFX = {
         };
         document.addEventListener('pointerdown', wake);
         document.addEventListener('touchstart', wake);
-
-        // Scroll sound (throttled)
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            const now = Date.now();
-            if (now - lastScroll > 400) {
-                this.scroll();
-                lastScroll = now;
-            }
-        }, { passive: true });
     },
 
     // Soft tap — button/card press
@@ -92,14 +81,6 @@ const SFX = {
         this._play([
             { type: 'triangle', freq: [300, 600], dur: 0.12, vol: 0.035 },
             { type: 'sine', freq: [600, 900], dur: 0.1, vol: 0.025, delay: 0.08 }
-        ]);
-    },
-
-    // Scroll tick — very subtle
-    scroll() {
-        if (!this.ready) return;
-        this._play([
-            { type: 'sine', freq: [2200, 1800], dur: 0.025, vol: 0.015 }
         ]);
     },
 
@@ -130,23 +111,6 @@ const SFX = {
         ]);
     },
 
-    // Game tap
-    gameTap() {
-        if (!this.ready) return;
-        this._play([
-            { type: 'square', freq: [800, 1200], dur: 0.04, vol: 0.04 }
-        ]);
-    },
-
-    // Game over
-    gameOver() {
-        if (!this.ready) return;
-        this._play([
-            { type: 'sawtooth', freq: [500, 200], dur: 0.2, vol: 0.04 },
-            { type: 'sine', freq: [200, 100], dur: 0.3, vol: 0.03, delay: 0.15 }
-        ]);
-    },
-
     // Internal: play array of tone configs
     _play(tones) {
         if (!this.ctx) return;
@@ -173,7 +137,7 @@ const SFX = {
 /* ===== RIPPLE + HAPTIC ===== */
 const Ripple = {
     init() {
-        document.querySelectorAll('.btn, .tab, .social-btn, .stat, .theme-btn, .tag, .chip, .game-area').forEach(el => {
+        document.querySelectorAll('.btn, .tab, .social-btn, .stat, .theme-btn, .tag, .chip').forEach(el => {
             el.style.position = el.style.position || 'relative';
             el.style.overflow = 'hidden';
             el.addEventListener('pointerdown', (e) => this.fire(e, el));
@@ -233,7 +197,6 @@ const ScrollFX = {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    SFX.open();
                     observer.unobserve(entry.target);
                 }
             });
@@ -339,84 +302,6 @@ const Contact = {
             Toast.show('Opening WhatsApp...', 'success');
             form.reset();
         });
-    }
-};
-
-/* ===== MINI GAME: Tap Speed Challenge ===== */
-const Game = {
-    score: 0,
-    timer: null,
-    timeLeft: 0,
-    active: false,
-
-    init() {
-        const startBtn = document.getElementById('gameStart');
-        const area = document.getElementById('gameArea');
-        const scoreEl = document.getElementById('gameScore');
-        const timerEl = document.getElementById('gameTimer');
-        if (!startBtn || !area) return;
-
-        startBtn.addEventListener('click', () => {
-            if (this.active) return;
-            this.start(area, scoreEl, timerEl, startBtn);
-            SFX.nav();
-        });
-
-        area.addEventListener('pointerdown', (e) => {
-            if (!this.active) return;
-            const target = e.target;
-            if (target.classList.contains('game-target')) {
-                this.score++;
-                scoreEl.textContent = this.score;
-                target.remove();
-                this.spawn(area);
-                SFX.gameTap();
-                // Visual feedback
-                area.style.transform = 'scale(0.98)';
-                setTimeout(() => area.style.transform = '', 80);
-            }
-        });
-    },
-
-    start(area, scoreEl, timerEl, startBtn) {
-        this.score = 0;
-        this.timeLeft = 10;
-        this.active = true;
-        scoreEl.textContent = '0';
-        timerEl.textContent = '10s';
-        startBtn.textContent = 'Playing...';
-        startBtn.disabled = true;
-        area.innerHTML = '';
-
-        this.spawn(area);
-
-        this.timer = setInterval(() => {
-            this.timeLeft--;
-            timerEl.textContent = this.timeLeft + 's';
-            if (this.timeLeft <= 0) {
-                this.end(area, startBtn);
-            }
-        }, 1000);
-    },
-
-    spawn(area) {
-        const target = document.createElement('div');
-        target.className = 'game-target';
-        const maxX = area.clientWidth - 44;
-        const maxY = area.clientHeight - 44;
-        target.style.left = Math.random() * maxX + 'px';
-        target.style.top = Math.random() * maxY + 'px';
-        area.appendChild(target);
-    },
-
-    end(area, startBtn) {
-        clearInterval(this.timer);
-        this.active = false;
-        area.innerHTML = `<div class="game-result">🎉 ${this.score} taps!</div>`;
-        startBtn.textContent = 'Play Again';
-        startBtn.disabled = false;
-        SFX.gameOver();
-        Toast.show(`Score: ${this.score} taps in 10s!`, 'success');
     }
 };
 
