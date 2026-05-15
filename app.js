@@ -6,7 +6,16 @@
 
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load settings and render dynamic content
+    try {
+        const res = await fetch('settings.json');
+        if (res.ok) {
+            const cfg = await res.json();
+            Settings.apply(cfg);
+        }
+    } catch(e) { /* settings.json optional — falls back to HTML defaults */ }
+
     Intro.init();
     SFX.init();
     Theme.init();
@@ -17,6 +26,61 @@ document.addEventListener('DOMContentLoaded', () => {
     Contact.init();
     Ripple.init();
 });
+
+/* ===== SETTINGS LOADER ===== */
+const Settings = {
+    apply(cfg) {
+        // Profile
+        if (cfg.profile) {
+            const p = cfg.profile;
+            this._set('.hero-name', p.name);
+            this._set('.hero-role', p.role);
+            if (p.photo) {
+                const img = document.querySelector('.hero-avatar img');
+                if (img) img.src = p.photo;
+            }
+            // About info
+            const rows = document.querySelectorAll('.info-row span');
+            if (rows.length >= 4) {
+                rows[0].textContent = p.fullName || '';
+                rows[1].textContent = p.location || '';
+                rows[2].textContent = p.status || '';
+                rows[3].textContent = p.hobbies || '';
+            }
+            const bio = document.querySelector('.bio');
+            if (bio && p.bio) bio.textContent = p.bio;
+        }
+
+        // Stats
+        if (cfg.stats) {
+            const statEls = document.querySelectorAll('.stat strong');
+            if (statEls[0]) statEls[0].textContent = cfg.stats.years || '3+';
+            if (statEls[1]) statEls[1].textContent = cfg.stats.projects || '6';
+            if (statEls[2]) statEls[2].textContent = cfg.stats.passion || '100';
+        }
+
+        // Contact WhatsApp number
+        if (cfg.contact && cfg.contact.whatsappNumber) {
+            window._waNumber = cfg.contact.whatsappNumber;
+        }
+
+        // Default theme
+        if (cfg.theme && cfg.theme.default) {
+            const saved = localStorage.getItem('theme');
+            if (!saved) {
+                document.documentElement.setAttribute('data-theme', cfg.theme.default);
+                document.querySelectorAll('.theme-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.theme === cfg.theme.default);
+                });
+            }
+        }
+    },
+
+    _set(selector, text) {
+        const el = document.querySelector(selector);
+        if (el && text) el.textContent = text;
+    }
+};
 
 /* ===== INTRO SPLASH (CSS Animated) ===== */
 const Intro = {
@@ -296,8 +360,9 @@ const Contact = {
                 return;
             }
 
+            const waNum = window._waNumber || '6282173230348';
             const text = `*Portfolio Contact*\n\n*Name:* ${name}\n*Email:* ${email || '-'}\n\n*Message:*\n${msg}`;
-            window.open(`https://wa.me/6282173230348?text=${encodeURIComponent(text)}`, '_blank');
+            window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(text)}`, '_blank');
             SFX.success();
             Toast.show('Opening WhatsApp...', 'success');
             form.reset();

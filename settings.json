@@ -1,0 +1,94 @@
+{
+  "// PENGATURAN PORTFOLIO": "Edit value di bawah ini sesuai kebutuhanmu",
+
+  "profile": {
+    "name": "Ayogi Akbar",
+    "role": "Full-Stack Developer & API Engineer",
+    "fullName": "Ayogi Akbar Afrenggo",
+    "location": "Pekanbaru, Riau",
+    "status": "Married — Echa Putri Exsala",
+    "hobbies": "Coding, Gaming, Design",
+    "bio": "Gamer & Coding Enthusiast. Seorang ayah dari 3 anak yang berkarier sebagai graphic designer di perusahaan advertising. Coding adalah passion — dari ngulik script sampai bikin desain kece, hidup selalu penuh tantangan digital.",
+    "photo": "gio.jpg",
+    "favicon": "profile.png"
+  },
+
+  "stats": {
+    "years": "3+",
+    "projects": "6",
+    "passion": "100"
+  },
+
+  "skills": {
+    "languages": [
+      { "name": "HTML/CSS", "percent": 80, "icon": "devicon-html5-plain" },
+      { "name": "PHP", "percent": 75, "icon": "devicon-php-plain" },
+      { "name": "JavaScript", "percent": 65, "icon": "devicon-javascript-plain" },
+      { "name": "Python", "percent": 50, "icon": "devicon-python-plain" }
+    ],
+    "frameworks": ["Laravel", "Bootstrap", "Tailwind", "React", "Express.js", "MySQL", "Git", "VS Code", "Figma", "Linux"]
+  },
+
+  "projects": [
+    {
+      "name": "Exsala REST API",
+      "description": "Public REST API for developers. Various endpoints: AI tools, downloader, converter, search, and more. Fast, reliable, free.",
+      "tech": ["Node.js", "Express", "REST API", "JSON"],
+      "url": "https://exsalapi.my.id",
+      "docsUrl": "https://exsalapi.my.id",
+      "badge": "LIVE",
+      "iconClass": "fas fa-server",
+      "iconGradient": ["#30D158", "#34C759"]
+    }
+  ],
+
+  "social": [
+    { "platform": "GitHub", "url": "https://github.com/giienew", "icon": "fab fa-github" },
+    { "platform": "WhatsApp", "url": "https://api.whatsapp.com/send?phone=6282173230348", "icon": "fab fa-whatsapp" },
+    { "platform": "Instagram", "url": "https://instagram.com/only_babygio", "icon": "fab fa-instagram" },
+    { "platform": "REST API", "url": "https://exsalapi.my.id", "icon": "fas fa-server" },
+    { "platform": "Facebook", "url": "https://facebook.com/ayogi", "icon": "fab fa-facebook" }
+  ],
+
+  "contact": {
+    "whatsappNumber": "6282173230348"
+  },
+
+  "theme": {
+    "default": "dark",
+    "// options": "dark | light | midnight"
+  },
+
+  "colors": {
+    "// INFO": "Warna bisa diubah di app.css bagian :root — ini hanya referensi",
+    "dark": {
+      "primary": "#0A84FF",
+      "primary2": "#5AC8FA",
+      "green": "#30D158",
+      "red": "#FF453A",
+      "purple": "#BF5AF2",
+      "background": "#000000",
+      "text": "#FFFFFF"
+    },
+    "light": {
+      "primary": "#007AFF",
+      "primary2": "#5856D6",
+      "background": "#F2F2F7",
+      "text": "#000000"
+    },
+    "midnight": {
+      "primary": "#64DFDF",
+      "primary2": "#48BFE3",
+      "green": "#80ED99",
+      "purple": "#C77DFF",
+      "background": "#0B1A2E",
+      "text": "#E6F1FF"
+    }
+  },
+
+  "fonts": {
+    "main": "Inter",
+    "mono": "JetBrains Mono",
+    "// NOTE": "Font diload dari Google Fonts di index.html"
+  }
+}
