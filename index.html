@@ -1,196 +1,398 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Ayogi Akbar — Developer Portfolio</title>
+    <title>AYOGI — Gienetic | Premium Portfolio</title>
     <link rel="icon" href="profile.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="app.css">
-    <!-- Devicon (language icons) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
 </head>
 <body>
 
-    <!-- INTRO OVERLAY (CSS Animated) -->
+    <!-- INTRO OVERLAY -->
     <div class="intro-overlay" id="introOverlay">
-        <div class="intro-icon">
-            <i class="fas fa-code"></i>
-        </div>
-        <h2 class="intro-name">Ayogi Akbar</h2>
-        <p class="intro-text">Loading...</p>
+        <div class="intro-glow"></div>
+        <div class="intro-icon"><i class="fas fa-code"></i></div>
+        <h2 class="intro-name">GIENETIC</h2>
+        <p class="intro-text">Advanced Code &amp; Technology Solutions</p>
         <div class="intro-bar"><div class="intro-fill"></div></div>
     </div>
 
-    <!-- BG -->
-    <div class="bg-gradient"></div>
+    <!-- AMBIENT BG -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-vignette"></div>
+    <div class="bg-grain"></div>
 
-    <!-- Theme Toggle -->
+    <!-- STATUS BAR (iOS) -->
+    <header class="statusbar">
+        <span class="statusbar-time" id="clock">21:00</span>
+        <span class="statusbar-notch"></span>
+        <span class="statusbar-icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi" id="wifiIcon"></i>
+            <span class="battery">
+                <span class="battery-body"><span class="battery-fill" id="batteryFill"></span></span>
+                <span class="battery-cap"></span>
+            </span>
+            <span class="battery-pct" id="batteryPct">100%</span>
+        </span>
+    </header>
+
+    <!-- THEME TOGGLE -->
     <div class="theme-toggle" id="themeToggle">
         <button class="theme-btn active" data-theme="dark" aria-label="Dark"><i class="fas fa-moon"></i></button>
-        <button class="theme-btn" data-theme="light" aria-label="Light"><i class="fas fa-sun"></i></button>
         <button class="theme-btn" data-theme="midnight" aria-label="Midnight"><i class="fas fa-star"></i></button>
     </div>
 
-    <!-- Status Bar -->
-    <header class="statusbar">
-        <span class="statusbar-time" id="clock"></span>
-        <span class="statusbar-title">Portfolio</span>
-        <span class="statusbar-icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></span>
-    </header>
+    <main class="container" id="mainScroll">
 
-    <!-- Main -->
-    <main class="container">
-
-        <!-- HERO -->
+        <!-- ============ HOME ============ -->
         <section id="home" class="section hero" data-anim>
+            <div class="brand-top">
+                <span class="brand-glow">GIENETIC</span>
+                <span class="brand-tag">Advanced Code &amp; Technology Solutions</span>
+            </div>
+
             <div class="hero-avatar">
-                <img src="gio.jpg" alt="Ayogi Akbar" loading="eager">
+                <div class="avatar-ring"></div>
+                <div class="avatar-ring avatar-ring-2"></div>
+                <img src="gio.jpg" alt="Ayogi Akbar Afrenggo" loading="eager">
                 <span class="avatar-online"></span>
+                <div class="avatar-reflection"></div>
             </div>
-            <h1 class="hero-name">Ayogi Akbar</h1>
-            <p class="hero-role">Full-Stack Developer & API Engineer</p>
-            <div class="hero-badges">
-                <span class="chip chip-blue"><i class="fas fa-bolt"></i> Developer</span>
-                <span class="chip chip-green"><i class="fas fa-check-circle"></i> Verified</span>
+
+            <h1 class="hero-name">AYOGI</h1>
+            <p class="hero-alias">~ Gienetic ~</p>
+            <p class="hero-role">Software Developer <span class="dot">•</span> Reverse Engineer <span class="dot">•</span> Android Modder</p>
+
+            <div class="hero-chips">
+                <span class="chip chip-blue"><i class="fas fa-bolt"></i> Available</span>
+                <span class="chip chip-loc"><i class="fas fa-map-marker-alt"></i> Pekanbaru, Indonesia</span>
             </div>
-            <div class="hero-stats">
-                <div class="stat"><strong>3+</strong><span>Years</span></div>
-                <div class="stat"><strong>6</strong><span>Projects</span></div>
-                <div class="stat"><strong>100</strong><span>Passion</span></div>
-            </div>
+
+            <p class="hero-intro">
+                Hai, saya Ayogi, Developer Website &amp; Code Engineer dari Indonesia.
+                Saya mengkhususkan diri dalam pembuatan Website, Web Scraping,
+                Reverse APK, Android Modification System, dan Gaming.
+            </p>
+
             <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Projects</a>
-                <a href="#contact" class="btn btn-ghost"><i class="fas fa-paper-plane"></i> Contact</a>
+                <a href="#portfolio" class="btn btn-primary"><i class="fas fa-rocket"></i> Portofolio</a>
+                <a href="#contact" class="btn btn-ghost"><i class="fas fa-paper-plane"></i> Kontak</a>
             </div>
-        </section>
 
-        <!-- ABOUT -->
-        <section id="about" class="section" data-anim>
-            <h2 class="section-title">About</h2>
-            <div class="card">
-                <div class="info-grid">
-                    <div class="info-row"><i class="fas fa-user"></i><div><small>Full Name</small><span>Ayogi Akbar Afrenggo</span></div></div>
-                    <div class="info-row"><i class="fas fa-map-marker-alt"></i><div><small>Location</small><span>Pekanbaru, Riau</span></div></div>
-                    <div class="info-row"><i class="fas fa-heart"></i><div><small>Status</small><span>Married — Echa Putri Exsala</span></div></div>
-                    <div class="info-row"><i class="fas fa-gamepad"></i><div><small>Hobbies</small><span>Coding, Gaming, Design</span></div></div>
+            <!-- Profile Card -->
+            <div class="card profile-card">
+                <div class="card-glow"></div>
+                <div class="profile-head">
+                    <div class="profile-mini"><img src="gio.jpg" alt=""></div>
+                    <div>
+                        <strong>Ayogi Akbar Afrenggo</strong>
+                        <small>@giienew</small>
+                    </div>
+                    <span class="chip chip-green chip-sm"><i class="fas fa-check"></i> Verified</span>
                 </div>
-                <p class="bio">Gamer & Coding Enthusiast. Seorang ayah dari 3 anak yang berkarier sebagai graphic designer di perusahaan advertising. Coding adalah passion — dari ngulik script sampai bikin desain kece, hidup selalu penuh tantangan digital.</p>
+                <p class="profile-note">
+                    <i class="fas fa-heart"></i> Family Man — Husband of Echa Putri Exsala &amp; Father of 4
+                </p>
+                <div class="profile-meta">
+                    <span><i class="fas fa-map-pin"></i> Pekanbaru, Indonesia</span>
+                    <span><i class="fas fa-briefcase"></i> Code Engineer</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Widgets -->
+            <div class="widget-grid">
+                <div class="widget widget-battery" data-anim>
+                    <div class="widget-icon blue"><i class="fas fa-bolt"></i></div>
+                    <div class="widget-body">
+                        <small>Energy Level</small>
+                        <div class="widget-bar"><div class="widget-bar-fill" data-fill="92"></div></div>
+                        <span class="widget-val">92%</span>
+                    </div>
+                </div>
+                <div class="widget widget-caffeine" data-anim>
+                    <div class="widget-icon green"><i class="fas fa-mug-hot"></i></div>
+                    <div class="widget-body">
+                        <small>Coffee Today</small>
+                        <div class="widget-bar"><div class="widget-bar-fill fill-green" data-fill="75"></div></div>
+                        <span class="widget-val">3 cups</span>
+                    </div>
+                </div>
+                <div class="widget widget-music" data-anim>
+                    <div class="widget-icon purple"><i class="fas fa-music"></i></div>
+                    <div class="widget-body">
+                        <small>Now Playing</small>
+                        <strong class="widget-title">Lofi Coding Mix</strong>
+                        <span class="widget-sub">Deep Focus</span>
+                    </div>
+                </div>
+                <div class="widget widget-weather" data-anim>
+                    <div class="widget-icon orange"><i class="fas fa-cloud-sun"></i></div>
+                    <div class="widget-body">
+                        <small>Pekanbaru</small>
+                        <strong class="widget-title">31°C</strong>
+                        <span class="widget-sub">Partly Cloudy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Widget -->
+            <div class="card notif-card" data-anim>
+                <h4 class="card-subtitle"><i class="fas fa-bell"></i> Notifications</h4>
+                <div class="notif">
+                    <div class="notif-icon blue"><i class="fab fa-github"></i></div>
+                    <div class="notif-text">
+                        <strong>New star on giienew/gienetic-portofolio</strong>
+                        <small>2 minutes ago</small>
+                    </div>
+                    <span class="notif-dot"></span>
+                </div>
+                <div class="notif">
+                    <div class="notif-icon green"><i class="fab fa-whatsapp"></i></div>
+                    <div class="notif-text">
+                        <strong>Echa Putri Exsala: "Love you 💙"</strong>
+                        <small>15 minutes ago</small>
+                    </div>
+                    <span class="notif-dot"></span>
+                </div>
+                <div class="notif">
+                    <div class="notif-icon orange"><i class="fas fa-server"></i></div>
+                    <div class="notif-text">
+                        <strong>Exsala API uptime: 99.9%</strong>
+                        <small>1 hour ago</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Widget -->
+            <div class="card slider-card" data-anim>
+                <h4 class="card-subtitle"><i class="fas fa-sliders-h"></i> Focus Mode</h4>
+                <div class="slider-row">
+                    <i class="fas fa-moon slider-ico-l"></i>
+                    <input type="range" id="focusSlider" min="0" max="100" value="70" class="slider">
+                    <i class="fas fa-laptop-code slider-ico-r"></i>
+                </div>
+                <p class="slider-val" id="sliderVal">Deep Work — 70%</p>
             </div>
         </section>
 
-        <!-- PROJECTS -->
-        <section id="projects" class="section" data-anim>
-            <h2 class="section-title">Projects</h2>
+        <!-- ============ ABOUT ============ -->
+        <section id="about" class="section" data-anim>
+            <h2 class="section-title">Tentang Saya</h2>
 
-            <div class="card project-card">
+            <div class="card">
+                <div class="card-glow"></div>
+                <div class="info-grid">
+                    <div class="info-row">
+                        <i class="fas fa-user"></i>
+                        <div><small>Nama Lengkap</small><span>Ayogi Akbar Afrenggo</span></div>
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div><small>Lokasi</small><span>Pekanbaru, Indonesia</span></div>
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-heart"></i>
+                        <div><small>Keluarga</small><span>Husband of Echa Putri Exsala &amp; Father of 4</span></div>
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-gamepad"></i>
+                        <div><small>Hobi</small><span>Coding, Gaming, Reverse Engineering</span></div>
+                    </div>
+                </div>
+                <p class="bio">
+                    Developer Website &amp; Code Engineer dari Pekanbaru, Indonesia.
+                    Fokus pada Web Development, Web Scraping, Reverse APK,
+                    Android Modification System, dan Gaming. Family man, suami dari
+                    Echa Putri Exsala dan ayah dari 4 anak.
+                </p>
+            </div>
+
+            <div class="card stats-card" data-anim>
+                <div class="stat"><strong>5+</strong><span>Tahun</span></div>
+                <div class="stat-div"></div>
+                <div class="stat"><strong>50+</strong><span>Proyek</span></div>
+                <div class="stat-div"></div>
+                <div class="stat"><strong>100%</strong><span>Passion</span></div>
+            </div>
+
+            <!-- Fingerprint Scanner -->
+            <div class="card fingerprint-card" data-anim>
+                <h4 class="card-subtitle"><i class="fas fa-fingerprint"></i> Security Access</h4>
+                <div class="fingerprint-wrap">
+                    <div class="fingerprint" id="fingerprint">
+                        <i class="fas fa-fingerprint"></i>
+                        <div class="fingerprint-scan"></div>
+                    </div>
+                    <p class="fingerprint-status" id="fpStatus">Tap untuk memindai sidik jari</p>
+                </div>
+                <div class="fp-progress" id="fpProgress"><div class="fp-fill" id="fpFill"></div></div>
+            </div>
+        </section>
+
+        <!-- ============ PORTFOLIO ============ -->
+        <section id="portfolio" class="section" data-anim>
+            <h2 class="section-title">Portofolio</h2>
+
+            <div class="card category-card" data-anim>
+                <div class="cat-head">
+                    <div class="cat-icon" style="--g1:#0A84FF;--g2:#5AC8FA"><i class="fas fa-laptop-code"></i></div>
+                    <div><strong>Web Development</strong><small>Website &amp; web app modern</small></div>
+                </div>
+                <div class="cat-tags">
+                    <span class="tag">HTML/CSS</span><span class="tag">JavaScript</span>
+                    <span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">React</span>
+                </div>
+            </div>
+
+            <div class="card category-card" data-anim>
+                <div class="cat-head">
+                    <div class="cat-icon" style="--g1:#30D158;--g2:#34C759"><i class="fas fa-server"></i></div>
+                    <div><strong>API Scraping</strong><small>Web scraping &amp; REST API</small></div>
+                </div>
+                <div class="cat-tags">
+                    <span class="tag">Python</span><span class="tag">Node.js</span>
+                    <span class="tag">Express</span><span class="tag">JSON</span><span class="tag">Automation</span>
+                </div>
+            </div>
+
+            <div class="card category-card" data-anim>
+                <div class="cat-head">
+                    <div class="cat-icon" style="--g1:#BF5AF2;--g2:#D8B4FE"><i class="fas fa-mask"></i></div>
+                    <div><strong>Reverse Engineering</strong><small>Reverse APK &amp; analisis binary</small></div>
+                </div>
+                <div class="cat-tags">
+                    <span class="tag">Frida</span><span class="tag">Ghidra</span>
+                    <span class="tag">jadx</span><span class="tag">smali</span><span class="tag">ARM64</span>
+                </div>
+            </div>
+
+            <div class="card category-card" data-anim>
+                <div class="cat-head">
+                    <div class="cat-icon" style="--g1:#FF9F0A;--g2:#FFD60A"><i class="fab fa-android"></i></div>
+                    <div><strong>Android Root &amp; Mod</strong><small>Android modification system</small></div>
+                </div>
+                <div class="cat-tags">
+                    <span class="tag">Magisk</span><span class="tag">KernelSU</span>
+                    <span class="tag">LSPosed</span><span class="tag">Hybrid Mount</span><span class="tag">Xposed</span>
+                </div>
+            </div>
+
+            <div class="card category-card" data-anim>
+                <div class="cat-head">
+                    <div class="cat-icon" style="--g1:#64D2FF;--g2:#0A84FF"><i class="fas fa-cogs"></i></div>
+                    <div><strong>Automation Scripts</strong><small>Bot &amp; task automation</small></div>
+                </div>
+                <div class="cat-tags">
+                    <span class="tag">Bash</span><span class="tag">Python</span>
+                    <span class="tag">Cron</span><span class="tag">CI/CD</span><span class="tag">Telegram Bot</span>
+                </div>
+            </div>
+
+            <div class="card category-card" data-anim>
+                <div class="cat-head">
+                    <div class="cat-icon" style="--g1:#FF453A;--g2:#FF6961"><i class="fas fa-network-wired"></i></div>
+                    <div><strong>Server Infrastructure</strong><small>Deploy &amp; manage server</small></div>
+                </div>
+                <div class="cat-tags">
+                    <span class="tag">Linux</span><span class="tag">Nginx</span>
+                    <span class="tag">Docker</span><span class="tag">VPS</span><span class="tag">Cloudflare</span>
+                </div>
+            </div>
+
+            <!-- Featured Project -->
+            <div class="card project-card" data-anim>
+                <div class="card-glow"></div>
                 <div class="project-header">
                     <div class="project-icon"><i class="fas fa-server"></i></div>
                     <span class="chip chip-green">LIVE</span>
                 </div>
                 <h3 class="project-name">Exsala REST API</h3>
-                <p class="project-desc">Public REST API for developers. Various endpoints: AI tools, downloader, converter, search, and more. Fast, reliable, free.</p>
+                <p class="project-desc">
+                    Public REST API untuk developer. Berbagai endpoint: AI tools,
+                    downloader, converter, search, dan lainnya. Cepat, andal, gratis.
+                </p>
                 <div class="project-tech">
-                    <span class="tag">Node.js</span>
-                    <span class="tag">Express</span>
-                    <span class="tag">REST API</span>
-                    <span class="tag">JSON</span>
+                    <span class="tag">Node.js</span><span class="tag">Express</span>
+                    <span class="tag">REST API</span><span class="tag">JSON</span>
                 </div>
                 <div class="project-actions">
-                    <a href="https://exsalapi.my.id" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Visit API</a>
-                    <a href="https://exsalapi.my.id" target="_blank" class="btn btn-ghost btn-sm"><i class="fas fa-book"></i> Docs</a>
-                </div>
-            </div>
-
-            <p class="muted-note">More projects coming soon...</p>
-        </section>
-
-        <!-- SKILLS -->
-        <section id="skills" class="section" data-anim>
-            <h2 class="section-title">Skills</h2>
-
-            <div class="card">
-                <h4 class="card-subtitle"><i class="fas fa-chart-pie"></i> Proficiency</h4>
-                <div class="charts-grid">
-                    <div class="chart-item">
-                        <div class="chart-icon-wrap">
-                            <svg class="chart-svg" viewBox="0 0 100 100">
-                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="80"/>
-                            </svg>
-                            <i class="devicon-html5-plain chart-lang-icon"></i>
-                        </div>
-                        <div class="chart-num">0%</div>
-                        <div class="chart-label">HTML/CSS</div>
-                    </div>
-                    <div class="chart-item">
-                        <div class="chart-icon-wrap">
-                            <svg class="chart-svg" viewBox="0 0 100 100">
-                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="75"/>
-                            </svg>
-                            <i class="devicon-php-plain chart-lang-icon"></i>
-                        </div>
-                        <div class="chart-num">0%</div>
-                        <div class="chart-label">PHP</div>
-                    </div>
-                    <div class="chart-item">
-                        <div class="chart-icon-wrap">
-                            <svg class="chart-svg" viewBox="0 0 100 100">
-                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="65"/>
-                            </svg>
-                            <i class="devicon-javascript-plain chart-lang-icon"></i>
-                        </div>
-                        <div class="chart-num">0%</div>
-                        <div class="chart-label">JavaScript</div>
-                    </div>
-                    <div class="chart-item">
-                        <div class="chart-icon-wrap">
-                            <svg class="chart-svg" viewBox="0 0 100 100">
-                                <circle class="chart-bg" cx="50" cy="50" r="40"/>
-                                <circle class="chart-ring" cx="50" cy="50" r="40" data-pct="50"/>
-                            </svg>
-                            <i class="devicon-python-plain chart-lang-icon"></i>
-                        </div>
-                        <div class="chart-num">0%</div>
-                        <div class="chart-label">Python</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h4 class="card-subtitle"><i class="fas fa-layer-group"></i> Frameworks & Tools</h4>
-                <div class="chip-grid">
-                    <span class="tag">Laravel</span>
-                    <span class="tag">Bootstrap</span>
-                    <span class="tag">Tailwind</span>
-                    <span class="tag">React</span>
-                    <span class="tag">Express.js</span>
-                    <span class="tag">MySQL</span>
-                    <span class="tag">Git</span>
-                    <span class="tag">VS Code</span>
-                    <span class="tag">Figma</span>
-                    <span class="tag">Linux</span>
+                    <a href="https://exsalapi.my.id" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> Kunjungi API</a>
+                    <a href="https://exsalapi.my.id" target="_blank" class="btn btn-ghost btn-sm"><i class="fas fa-book"></i> Dokumentasi</a>
                 </div>
             </div>
         </section>
 
+        <!-- ============ SERVICES ============ -->
+        <section id="services" class="section" data-anim>
+            <h2 class="section-title">Layanan</h2>
 
+            <div class="card service-card" data-anim>
+                <div class="svc-icon blue"><i class="fas fa-code"></i></div>
+                <h3>Web Development</h3>
+                <p>Website portofolio, landing page, web app full-stack. Responsive, cepat, modern.</p>
+            </div>
 
-        <!-- CONTACT -->
+            <div class="card service-card" data-anim>
+                <div class="svc-icon green"><i class="fas fa-download"></i></div>
+                <h3>API &amp; Scraping</h3>
+                <p>Web scraping custom, REST API publik/privat, integrasi data otomatis.</p>
+            </div>
+
+            <div class="card service-card" data-anim>
+                <div class="svc-icon purple"><i class="fas fa-mask"></i></div>
+                <h3>Reverse Engineering</h3>
+                <p>Reverse APK, analisis keamanan aplikasi, hooking dengan Frida, dekompilasi.</p>
+            </div>
+
+            <div class="card service-card" data-anim>
+                <div class="svc-icon orange"><i class="fab fa-android"></i></div>
+                <h3>Android Modding</h3>
+                <p>Root, custom kernel, modifikasi sistem, bypass detection, module development.</p>
+            </div>
+
+            <div class="card service-card" data-anim>
+                <div class="svc-icon cyan"><i class="fas fa-robot"></i></div>
+                <h3>Automation</h3>
+                <p>Bot otomatis, task scheduling, pipeline CI/CD, script produktivitas.</p>
+            </div>
+
+            <div class="card service-card" data-anim>
+                <div class="svc-icon red"><i class="fas fa-shield-alt"></i></div>
+                <h3>Server &amp; Infra</h3>
+                <p>Setup server, deployment, reverse proxy, hardening keamanan, monitoring.</p>
+            </div>
+        </section>
+
+        <!-- ============ CONTACT ============ -->
         <section id="contact" class="section" data-anim>
-            <h2 class="section-title">Contact</h2>
+            <h2 class="section-title">Kontak</h2>
 
             <div class="card">
+                <div class="card-glow"></div>
                 <form id="contactForm" class="contact-form">
-                    <div class="field"><label>Name</label><input type="text" id="fname" placeholder="Your name" required></div>
-                    <div class="field"><label>Email</label><input type="email" id="femail" placeholder="your@email.com"></div>
-                    <div class="field"><label>Message</label><textarea id="fmsg" placeholder="Write something..." rows="3" required></textarea></div>
-                    <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-paper-plane"></i> Send via WhatsApp</button>
+                    <div class="field">
+                        <label>Nama</label>
+                        <input type="text" id="fname" placeholder="Nama kamu" required>
+                    </div>
+                    <div class="field">
+                        <label>Email</label>
+                        <input type="email" id="femail" placeholder="kamu@email.com">
+                    </div>
+                    <div class="field">
+                        <label>Pesan</label>
+                        <textarea id="fmsg" placeholder="Tulis sesuatu..." rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fab fa-whatsapp"></i> Kirim via WhatsApp
+                    </button>
                 </form>
             </div>
 
@@ -199,20 +401,41 @@
                 <a href="https://api.whatsapp.com/send?phone=6282173230348" target="_blank" class="social-btn" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 <a href="https://instagram.com/only_babygio" target="_blank" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="https://exsalapi.my.id" target="_blank" class="social-btn" aria-label="API"><i class="fas fa-server"></i></a>
-                <a href="https://facebook.com/ayogi" target="_blank" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            </div>
+
+            <div class="footer-brand">
+                <strong>GIENETIC</strong>
+                <span>Advanced Code &amp; Technology Solutions</span>
+                <small>© 2026 Ayogi Akbar Afrenggo — Pekanbaru, Indonesia</small>
             </div>
         </section>
 
     </main>
 
-    <!-- Tab Bar -->
-    <nav class="tabbar" id="tabbar">
-        <a href="#home" class="tab active" data-section="home"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="#about" class="tab" data-section="about"><i class="fas fa-user"></i><span>About</span></a>
-        <a href="#projects" class="tab" data-section="projects"><i class="fas fa-folder"></i><span>Projects</span></a>
-        <a href="#skills" class="tab" data-section="skills"><i class="fas fa-code"></i><span>Skills</span></a>
-        <a href="#contact" class="tab" data-section="contact"><i class="fas fa-envelope"></i><span>Contact</span></a>
+    <!-- FLOATING NAV -->
+    <nav class="floatnav" id="floatnav">
+        <a href="#home" class="fnav active" data-section="home">
+            <i class="fas fa-home"></i><span>Beranda</span>
+        </a>
+        <a href="#about" class="fnav" data-section="about">
+            <i class="fas fa-user"></i><span>Tentang Saya</span>
+        </a>
+        <a href="#portfolio" class="fnav" data-section="portfolio">
+            <i class="fas fa-folder-open"></i><span>Portofolio</span>
+        </a>
+        <a href="#services" class="fnav" data-section="services">
+            <i class="fas fa-concierge-bell"></i><span>Layanan</span>
+        </a>
+        <a href="#contact" class="fnav" data-section="contact">
+            <i class="fas fa-envelope"></i><span>Kontak</span>
+        </a>
+        <div class="fnav-indicator" id="fnavIndicator"></div>
     </nav>
+
+    <!-- FAB -->
+    <button class="fab" id="fabTop" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script src="app.js"></script>
 </body>
